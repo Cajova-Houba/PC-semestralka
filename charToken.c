@@ -50,7 +50,7 @@ void smaz(chrTkn *r)
 
 void vypis(chrTkn *r)
 {
-	chrTkn *tmp;
+	chrTkn *tmp = NULL;
 	if(r == NULL)
 	{
 		return;
@@ -67,6 +67,23 @@ void vypis(chrTkn *r)
 		{
 			printf("%c",(char)tmp->val);
 		}
+		tmp = tmp->dalsi;
+	}
+	printf("\n");
+}
+
+void vypisASCII(chrTkn *r)
+{
+	chrTkn *tmp = NULL;
+	if(r == NULL)
+	{
+		return;
+	}
+	
+	tmp = r;
+	while(tmp != NULL)
+	{
+		printf("Znak: %i\n",tmp->val);
 		tmp = tmp->dalsi;
 	}
 	printf("\n");

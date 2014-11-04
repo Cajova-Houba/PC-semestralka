@@ -15,5 +15,6 @@ chrTkn *vlozNaKonec(chrTkn *r, int value, int jeCislo);
 chrTkn *createToken(int value, int jeCislo);
 void vypis(chrTkn *r);
 void smaz(chrTkn *r);
+void vypisASCII(chrTkn *r);
 
 #endif

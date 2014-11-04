@@ -2,7 +2,7 @@
 #define _shuntyard_h
 #include "charToken.h"
 
-int shuntingYard(char input[], char postbuff[], int inLen);
+int shuntingYard2(char input[], char postbuff[], int inLen);
 chrTkn *preproc(int vstupLen, char input[]);
-chrTkn *shuntingYard2(chrTkn *vstup);
+chrTkn *shuntingYard(chrTkn *vstup);
 #endif

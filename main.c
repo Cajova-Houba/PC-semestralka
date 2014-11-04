@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
 	chrTkn *postRoot = NULL;
 	
 	strcpy(vstup, "(5+(25-(5+(5-2^2)-3*2)+5)-2*5)\0");
+	//strcpy(vstup, "(5+5)\0");
 	//strcpy(vstup,argv[1]);
 	for (i = 0; i < len; i++)
 	{
@@ -23,7 +24,7 @@ int main(int argc, char *argv[])
 	vypis(root);
 	
 	/*Prevedeni na postfix notaci*/
-	postRoot = shuntingYard2(root);
+	postRoot = shuntingYard(root);
 	vypis(postRoot);
 	free(root);
 	free(postRoot);

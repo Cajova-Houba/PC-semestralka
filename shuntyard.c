@@ -111,7 +111,7 @@
   * tvori matematicky vyraz v postfixove notaci.
   * Pokud fce vrati NULL, doslo k chybe.
   */
- chrTkn *shuntingYard2(chrTkn *vstup)
+ chrTkn *shuntingYard(chrTkn *vstup)
  {
 	char stack[255];
 	chrTkn *tmp = NULL;
@@ -141,6 +141,7 @@
 		{
 			/*Cislo - dej na vystup*/
 			vystup = vlozNaKonec(vystup,tmp->val,1);
+			/*printf("Nalezeno cislo %i, vlozeno na vystup\n",tmp->val);*/
 		}
 		else
 		{
@@ -241,6 +242,17 @@
 		
 		tmp = tmp->dalsi;
 	}
+	/*Zpracovany vsechny tokeny na vstupu, zbyva vyprazdnit zasobnik.*/
+	while(sp)
+    {
+		/*printf("%d : %s\n",sp,stack);*/
+		if(show(&sp,stack) == '(')
+		{
+			printf("Chyba: Neuzavreny vyraz.\n");
+			return NULL;
+		}
+        vystup = vlozNaKonec(vystup,pop(&sp,stack),0);
+    }
 	
 	return vystup;
 	 
@@ -252,8 +264,10 @@
   * 
   * CHYBY:
   * 1: Neuzavreny vyraz.
+  * 
+  * !!!!!! STARE - NEPOUZIVAT !!!!!!
   */
- int shuntingYard(char input[], char postbuff[], int inLen)
+ int shuntingYard2(char input[], char postbuff[], int inLen)
  {
 	 char stack[255];
 	 
@@ -424,10 +438,21 @@ chrTkn *preproc(int vstupLen, char input[])
 					cislo += (input[i] - '0');
 					i++;
 				}
-				
+				/*printf("Nalezeno cislo %i\n",cislo);*/
 				root = vlozNaKonec(root,cislo,1);
 				
 				continue;
+			}
+			
+			/*
+			 * Pokud narazi na prazdny charakter, ukonci pruchod retezcem.
+			 * Neni nutno inicializovat cele staticke pole vstupu, pouze
+			 * staci pridat na konec znak \0. Pri nacitani vstupu ze statickeho
+			 * pole se bez pouziti \0 objevuji artefakty.
+			 */ 
+			if(input[i] == '\0')
+			{
+				return root;
 			}
 			
 			i++;
