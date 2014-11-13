@@ -1,6 +1,13 @@
 /*
  * Knihovna funkci, ktera se stara o vypocet matematickych vyrazu
  * v postfixove notaci.
+ * Operatory a fce:
+ * '+' : scitani
+ * '-' : odcitani
+ * '*' : nasobeni
+ * '/' : deleni
+ * '^' : mocnina
+ * '_' : unarni minus
  */
 
 #include <stdlib.h>
@@ -79,6 +86,8 @@ double compute(chrTkn *root)
 							
 				case '^':	tmpRes = powD(popd(&sp,stack),popd(&sp,stack));
 							break;
+				
+				case '_':	tmpRes = (-1)*popd(&sp,stack);
 			}
 			
 			

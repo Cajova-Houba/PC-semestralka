@@ -19,6 +19,7 @@
 		 case '-':
 		 case '*':
 		 case '/':
+		 case '_':
 		 case '^': return 1;
 				   break;
 		 
@@ -42,6 +43,7 @@
 		 case '+':
 		 case '-': return 1;
 		 case '*':
+		 case '_':
 		 case '/': return 2;
 		 case '^': return 3;
 			 
@@ -58,6 +60,7 @@
 	 {
 		 case '+':
 		 case '-':
+		 case '_':
 		 case '*':
 		 case '/': return 1;
 		 
@@ -380,8 +383,23 @@ chrTkn *preproc(int vstupLen, char input[])
 			/*Jednoznakove retezce*/
 			if(isOperator(input[i]) || (input[i] == ')') || (input[i] == '('))
 			{
-				root = vlozNaKonec(root,input[i],0);
-				/*printf("Nalezen operator %c\n",input[i]);*/
+				/*Kontrola zda se nejedna o unarni - */ 
+				if(input[i] == '-')
+				{
+					if ((i == 0) || (input[i-1] == ')') || (input[i-1] == '(') || isOperator(input[i-1]))
+					{
+						root = vlozNaKonec(root,'_',0);
+					}
+					else
+					{
+						root = vlozNaKonec(root,input[i],0);
+					}
+				}
+				else
+				{
+					root = vlozNaKonec(root,input[i],0);
+				}
+				printf("Nalezen operator %c\n",input[i]);
 				
 				i++;
 				continue;

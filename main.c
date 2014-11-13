@@ -13,7 +13,8 @@ int main(int argc, char *argv[])
 	chrTkn *postRoot = NULL;
 	double res = 0.0;
 	
-	strcpy(vstup, "(5+(25-(5+(5-2^2)-3*2)+5)-2*5)\0");
+	/*strcpy(vstup, "(5+(25-(5+(5-2^2)-3*2)+5)-2*5)\0");*/
+	strcpy(vstup, "-2*4\0");
 	printf("Vstup: %s\n",vstup);
 	//strcpy(vstup, "(5+5)\0");
 	//strcpy(vstup,argv[1]);
