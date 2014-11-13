@@ -42,7 +42,7 @@ double powD(double a, double exp)
 }
 
  
-double compute(chrTkn *root)
+double compute(chrTkn *root, double x_val)
 {
 	chrTkn *tmp = NULL;
 	/*vysledek prave provedene operace*/
@@ -72,6 +72,9 @@ double compute(chrTkn *root)
 			/*provedeni operace*/
 			switch(znak)
 			{
+                case 'x':   tmpRes = x_val;
+                            break;
+                                   
 				case '+':	tmpRes = addD(popd(&sp,stack),popd(&sp,stack));
 							break;
 							

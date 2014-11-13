@@ -43,9 +43,9 @@
 		 case '+':
 		 case '-': return 1;
 		 case '*':
-		 case '_':
 		 case '/': return 2;
-		 case '^': return 3;
+		 case '_': return 3;
+		 case '^': return 4;
 			 
 		 default: return 0;	 
 	 }
@@ -380,7 +380,7 @@ chrTkn *preproc(int vstupLen, char input[])
 	
 	while(i < vstupLen)
 	{
-			/*Jednoznakove retezce*/
+			/*Operatory*/
 			if(isOperator(input[i]) || (input[i] == ')') || (input[i] == '('))
 			{
 				/*Kontrola zda se nejedna o unarni - */ 
@@ -399,12 +399,18 @@ chrTkn *preproc(int vstupLen, char input[])
 				{
 					root = vlozNaKonec(root,input[i],0);
 				}
-				printf("Nalezen operator %c\n",input[i]);
+				/*printf("Nalezen operator %c\n",input[i]);*/
 				
 				i++;
 				continue;
 			}
 			
+			/*Promenna*/
+			if(input[i] == 'x')
+			{
+                        root = vlozNaKonec(root,input[i],0);
+            }
+            		
 			/*Cislo*/
 			if(input[i] >= '0' && input[i] <= '9')
 			{

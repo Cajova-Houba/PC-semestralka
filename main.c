@@ -11,17 +11,28 @@ int main(int argc, char *argv[])
 	char vstup[len], vystup[len];
 	chrTkn *root = NULL;
 	chrTkn *postRoot = NULL;
-	double res = 0.0;
+	double res = 0.0, x_val = 0.0;
 	
-	/*strcpy(vstup, "(5+(25-(5+(5-2^2)-3*2)+5)-2*5)\0");*/
-	strcpy(vstup, "-2*4\0");
-	printf("Vstup: %s\n",vstup);
-	//strcpy(vstup, "(5+5)\0");
-	//strcpy(vstup,argv[1]);
 	for (i = 0; i < len; i++)
 	{
 		vystup[i] = '\0';
 	}
+	
+	/*strcpy(vstup, "(5+(25-(5+(5-2^2)-3*2)+5)-2*5)\0");*/
+	//strcpy(vstup, "(5+5)\0");
+    if (argc > 1)
+    { 
+        strcpy(vstup,argv[1]);
+        if (argc > 2)
+        {
+            x_val = atof(argv[2]);
+        }
+    }
+    else
+    {
+        strcpy(vstup, "-2*4\0");
+    }
+   	printf("Vstup: %s\n",vstup);
 	
 	/*Prevedeni retezce na tokeny*/
 	root = preproc(len,vstup);
@@ -34,7 +45,7 @@ int main(int argc, char *argv[])
 	vypis(postRoot);
 	
 	/*vypocet*/
-	res = compute(postRoot);
+	res = compute(postRoot,x_val);
 	printf("Vysledek: %f\n",res);
 	
 	free(root);
