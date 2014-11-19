@@ -1,13 +1,7 @@
 /*
  * Knihovna funkci, ktera se stara o vypocet matematickych vyrazu
  * v postfixove notaci.
- * Operatory a fce:
- * '+' : scitani
- * '-' : odcitani
- * '*' : nasobeni
- * '/' : deleni
- * '^' : mocnina
- * '_' : unarni minus
+ * Operatory a fce: viz charToken.h
  */
 
 #include <stdlib.h>
@@ -16,6 +10,9 @@
 #include "zasobnik.h"
 #include "compute.h"
 
+#define PI 3.14159265
+
+/* Standardni operatory a fce*/
 double addD(double a, double b)
 {
 	return a+b;
@@ -41,6 +38,27 @@ double powD(double a, double exp)
 	return pow(a,exp); 
 }
 
+
+/* Goniometricke fce*/
+double sinD(double a)
+{
+    return sin(a*PI/180);
+}
+
+double cosD(double a)
+{
+    return cos(a*PI/180);
+}
+
+double tanD(double a)
+{
+	return tan(a*PI/180);
+}
+
+double cotanD(double a)
+{
+	return 1/(tan(a*PI/180));
+}
  
 double compute(chrTkn *root, double x_val)
 {
@@ -75,22 +93,35 @@ double compute(chrTkn *root, double x_val)
                 case 'x':   tmpRes = x_val;
                             break;
                                    
-				case '+':	tmpRes = addD(popd(&sp,stack),popd(&sp,stack));
+				case PLUS:		tmpRes = addD(popd(&sp,stack),popd(&sp,stack));
 							break;
 							
-				case '-':	tmpRes = subD(popd(&sp,stack),popd(&sp,stack));
+				case MINUS:		tmpRes = subD(popd(&sp,stack),popd(&sp,stack));
 							break;
 							
-				case '*':	tmpRes = mulD(popd(&sp,stack),popd(&sp,stack));
+				case KRAT:		tmpRes = mulD(popd(&sp,stack),popd(&sp,stack));
 							break;
 							
-				case '/':	tmpRes = divD(popd(&sp,stack),popd(&sp,stack));
+				case DELENO:	tmpRes = divD(popd(&sp,stack),popd(&sp,stack));
 							break;
 							
-				case '^':	tmpRes = powD(popd(&sp,stack),popd(&sp,stack));
+				case MOCN:		tmpRes = powD(popd(&sp,stack),popd(&sp,stack));
 							break;
 				
-				case '_':	tmpRes = (-1)*popd(&sp,stack);
+				case UMIN:		tmpRes = (-1)*popd(&sp,stack);
+                            break;
+							
+                case SIN:		tmpRes = sinD(popd(&sp,stack));
+							break;
+				
+				case COS:		tmpRes = cosD(popd(&sp,stack));
+							break;
+				
+				case TAN:		tmpRes = tanD(popd(&sp,stack));
+							break;
+
+				case COTAN:		tmpRes = cotanD(popd(&sp,stack));
+							break;							
 			}
 			
 			

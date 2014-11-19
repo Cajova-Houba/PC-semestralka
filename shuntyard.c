@@ -13,14 +13,20 @@
  */
  int isOperator(char op)
  {
+	/*Operator je funkce*/
+	if(op >=ABS && op<=TANH)
+	{
+		return 1;
+	}
+	
 	 switch(op)
 	 {
-		 case '+':
-		 case '-':
-		 case '*':
-		 case '/':
-		 case '_':
-		 case '^': return 1;
+		 case PLUS:
+		 case MINUS:
+		 case KRAT:
+		 case DELENO:
+		 case UMIN:
+		 case MOCN: return 1;
 				   break;
 		 
 		 default: return 0;
@@ -38,14 +44,20 @@
 		 return 0; 
 	 }
 	 
+	 /*Operator je fce*/
+	 if(op >= ABS && op <= TANH)
+	 {
+		return 5;
+	 }
+	 
 	 switch (op)
 	 {
-		 case '+':
-		 case '-': return 1;
-		 case '*':
-		 case '/': return 2;
-		 case '_': return 3;
-		 case '^': return 4;
+		 case PLUS:
+		 case MINUS: return 1;
+		 case KRAT:
+		 case DELENO: return 2;
+		 case UMIN: return 3;
+		 case MOCN: return 4; 
 			 
 		 default: return 0;	 
 	 }
@@ -58,13 +70,9 @@
  {
 	 switch (op)
 	 {
-		 case '+':
-		 case '-':
-		 case '_':
-		 case '*':
-		 case '/': return 1;
+		 case MOCN: return 0;
 		 
-		 default: return 0;
+		 default: return 1;
 			 
 	 } 
  }
@@ -142,7 +150,6 @@
 						  {
 							  /*printf("Davam operator %c do vystupu na pozici %d.\n",op2,cur);*/
 							  vystup = vlozNaKonec(vystup,pop(&sp,stack),0);
-							  /*postbuff[cur++] = pop(&sp,stack);*/
 						  }
 						  else
 						  {
@@ -158,7 +165,6 @@
 						  {
 							  /*printf("Davam operator %c do vystupu na pozici %d.\n",op2,cur);*/
 							  vystup = vlozNaKonec(vystup,pop(&sp,stack),0);
-							  /*postbuff[cur++] = pop(&sp,stack);*/
 						  }
 						  else
 						  {
@@ -217,157 +223,7 @@
         vystup = vlozNaKonec(vystup,pop(&sp,stack),0);
     }
 	
-	return vystup;
-	 
- }
- 
- /*
-  * Funkce provede algoritmus shunting yard nad vstupem, ktery obsahuje
-  * matematicky vyraz. Vrati matematicky vyraz v postfix notaci.
-  * 
-  * CHYBY:
-  * 1: Neuzavreny vyraz.
-  * 
-  * !!!!!! STARE - NEPOUZIVAT !!!!!!
-  */
- int shuntingYard2(char input[], char postbuff[], int inLen)
- {
-	 char stack[255];
-	 
-	 char op1,op2;
-	 /*
-	  * i = ukazatel do pole vstupu
-	  * cur = ukazatel do pole postbuff (=vystup)
-	  * sp = stack pointer, ukazuje na prvni volnou pozici
-	  */
-	  int i=0, cur=0 ,sp=0;
-	  for (i = 0; i < 255; i++)
-	  {
-		  stack[i] = '\0';
-	  }
-	  
-	  i=0;
-	  while (input[i] != '\0')
-	  {
-		  /*
-		   * Promenna
-		   */
-		   if(input[i] == 'x')
-		   {
-			   /*printf("Nalezena promenna: %c. Vkladam do vystupu na pozici: %d.\n",input[i],cur);*/
-			   postbuff[cur++] = input[i];
-		   }
-		   
-		   /*
-		    * Cislo
-		    */
-		    if ((input[i] >= '0') && (input[i] <= '9'))
-			{
-				/*printf("Nalezeno cislo: %c. Vkladam do vystupu na pozici: %d.\n",input[i],cur);*/
-				postbuff[cur++] = input[i];
-			}
-			
-			/*
-		    * Operator.
-		    */
-			if(isOperator(input[i]))
-			{
-				  op1 = input[i];
-				  /*printf("Nalezen operator: %c. Zasobnik: %s\n",op1,stack);*/
-				  /*
-				  * Dokud je na zasobniku operator, kontroluj prioritu a pripadne presun do vystupni fronty.
-				  */
-				  while(isOperator(show(&sp,stack)))
-				  {
-					  op2 = show(&sp,stack);
-					  /*printf("Zasobnik: %s\n Operator: %c",stack,op2);*/
-					  
-					  /*Asociace zleva*/
-					  if(asocZleva(op1))
-					  {
-						  /*
-						  * vkladej operatory ze zasobniku na vystup dokud bude jejich priorita vetsi nebo rovna 
-						  * priorite prave proverovaneho operatoru. Pak dej proverovany operator na zasobnik
-						  */
-						  if(getPriority(op1) <= getPriority(op2)) 
-						  {
-							  /*printf("Davam operator %c do vystupu na pozici %d.\n",op2,cur);*/
-							  postbuff[cur++] = pop(&sp,stack);
-						  }
-						  else
-						  {
-							  break;
-						  }
-					  }
-					  else
-					  {
-						  /*
-						  * Stejne jako u asociace zleva, pouze op1 < op2
-						  */
-						  if(getPriority(op1) < getPriority(op2)) 
-						  {
-							  /*printf("Davam operator %c do vystupu na pozici %d.\n",op2,cur);*/
-							  postbuff[cur++] = pop(&sp,stack);
-						  }
-						  else
-						  {
-							  break;
-						  }
-					  }
-				  }
-				  
-				  /*printf("Vkladam operator %c do zasobniku na pozici %d\n",op1,sp);*/
-				  push(&sp,stack,op1);
-			}
-			
-			
-		    /*
-		     * Zavorky.
-		     */
-		    if(input[i] == '(')
-		    {
-				/*printf("Nalezena leva zavorka. Vkladam na zasobnik na pozici %d.\n",sp);*/
-				push(&sp,stack,'(');
-			}
-			if(input[i] == ')')
-			{
-				/*
-				 * Dokud na vrcholu zasobniku neni leva zavorka, davej znaky na vystup.
-				 * Levou zavorku na vystup nedavej, pouze vyjmi ze  zasobniku.
-				 */
-				 while(show(&sp,stack) != '(')
-				 {
-					 /*printf("Vkladam znak %c do vystupu na pozici %d.\n",show(&sp,stack),cur);*/
-					 postbuff[cur++] = pop(&sp,stack);
-					 
-					 /*Neuzavreny vyraz*/
-					 if(sp == 0)
-					 {
-						 return 1;
-					 }
-				 }
-				 /*vyjmuti leve zavorky ze zasobniku*/
-				 pop(&sp,stack);
-			}
-			
-			i++;
-   }
-   
-   /*
-    * Zpracovany operatory ze vstupu, vyprazdnit zasobnik na vystup
-    */
-    while(sp)
-    {
-		/*printf("%d : %s\n",sp,stack);*/
-		if(show(&sp,stack) == '(')
-		{
-			return 1;
-		}
-        postbuff[cur++] = pop(&sp,stack);
-    }
-	  
-	  
-	  return 0;
+	return vystup; 
  }
  
  /*
@@ -376,6 +232,7 @@
 chrTkn *preproc(int vstupLen, char input[])
 {
 	int i=0,cislo=0;
+	char znak = '\0';
 	chrTkn *root = NULL;
 	
 	while(i < vstupLen)
@@ -426,6 +283,19 @@ chrTkn *preproc(int vstupLen, char input[])
 				root = vlozNaKonec(root,cislo,1);
 				
 				continue;
+			}
+			
+			/*Jiny znak nez promenna, bude potreba najit fci. Pokud bude nalezena pouze cast fce (napr si misto sin)
+			 * fce vrati NULL.*/
+			znak = input[i];
+			/*sin nebo sinh*/
+			if(znak == 's' || znak == 'S')
+			{
+				/*sinh*/
+				if(i+3 < vstupLen)
+				{
+					/*postupne porovnat*/
+				}
 			}
 			
 			/*

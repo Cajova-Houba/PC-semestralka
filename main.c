@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
 	
 	/*strcpy(vstup, "(5+(25-(5+(5-2^2)-3*2)+5)-2*5)\0");*/
 	//strcpy(vstup, "(5+5)\0");
+    /* Nacitni z argumentu*/
     if (argc > 1)
     { 
         strcpy(vstup,argv[1]);
@@ -48,8 +49,8 @@ int main(int argc, char *argv[])
 	res = compute(postRoot,x_val);
 	printf("Vysledek: %f\n",res);
 	
-	free(root);
-	free(postRoot);
+	smaz(root);
+	smaz(postRoot);
 
 	return 0;
 }
