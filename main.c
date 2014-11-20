@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
 	for (i = 0; i < len; i++)
 	{
 		vystup[i] = '\0';
+		vstup[i] '\0';
 	}
 	
 	/*strcpy(vstup, "(5+(25-(5+(5-2^2)-3*2)+5)-2*5)\0");*/
@@ -37,6 +38,12 @@ int main(int argc, char *argv[])
 	
 	/*Prevedeni retezce na tokeny*/
 	root = preproc(len,vstup);
+	/*Kontrola zda nenastala chyba*/
+	if (root == NULL)
+	{
+		printf("Chyba: zpracovani vstupu.\n");
+		return 1;
+	}
 	printf("Vstup prevedeny na tokeny: ");
 	vypis(root);
 	

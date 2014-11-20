@@ -225,14 +225,87 @@
 	
 	return vystup; 
  }
+
+/*
+ * Funkce hleda v zadanem retezci, od zadane pozice nazev jedne z funkci, jejiz kod pak vrati.
+ * Funkce predpoklada, ze zadany retezec konci '\0'. Vzhledem k tomu, ze hledani probiha v celem zadanem retezci
+ * je nutne zadat pouze tu cast retezce, kde se ma nazev fce nachazet.
+ * Pokud nastane chyba, funkce vrati 0. 
+ */
+int najdiFci(char *text)
+{	
+	if(strstr(text,"abs\0"))
+	{
+		return ABS;
+	}
+	else if(strstr(text,"exp\0"))
+	{
+		return EXP;
+	}
+	else if(strstr(text,"ln\0"))
+	{
+		return LN;
+	}
+	else if(strstr(text,"log\0"))
+	{
+		return LOG;
+	}
+	else if(strstr(text,"sin\0"))
+	{
+		return SIN;
+	}
+	else if(strstr(text,"cos\0"))
+	{
+		return COS;
+	}
+	else if(strstr(text,"tan\0"))
+	{
+		return TAN;
+	}
+	else if(strstr(text,"cotan\0"))
+	{
+		return COTAN;
+	}
+	else if(strstr(text,"asin\0"))
+	{
+		return ASIN;
+	}
+	else if(strstr(text,"acos\0"))
+	{
+		return ACOS;
+	}
+	else if(strstr(text,"atan\0"))
+	{
+		return ATAN;
+	}
+	else if(strstr(text,"sinh\0"))
+	{
+		return SINH;
+	}
+	else if(strstr(text,"cosh\0"))
+	{
+		return COSH;
+	}
+	else if(strstr(text,"tanh\0"))
+	{
+		return TANH;
+	}
+	else
+	{
+		return 0;
+	}
+}
  
  /*
  * Funkce prevede pole charu na spojovy seznam tokenu.
+ * Pokud dojde k chybe, fce vraci null.
  */
 chrTkn *preproc(int vstupLen, char input[])
 {
-	int i=0,cislo=0;
-	char znak = '\0';
+	int i=0,cislo=0,k=0;
+	char *znak = NULL; /*ukazatel na cast retezce, ve kterem by melo byt jmeno fce*/
+	int kodFce = 0;
+	
 	chrTkn *root = NULL;
 	
 	while(i < vstupLen)
@@ -287,14 +360,34 @@ chrTkn *preproc(int vstupLen, char input[])
 			
 			/*Jiny znak nez promenna, bude potreba najit fci. Pokud bude nalezena pouze cast fce (napr si misto sin)
 			 * fce vrati NULL.*/
-			znak = input[i];
-			/*sin nebo sinh*/
-			if(znak == 's' || znak == 'S')
+			if ((input[i] >= 'a') && (input[i] <= 'z'))
 			{
-				/*sinh*/
-				if(i+3 < vstupLen)
+				/*Kontrola delky vstupu*/
+				for(k=5;k>1;k--)
 				{
-					/*postupne porovnat*/
+					if(i+k < vstupLen)
+					{
+						znak = strncpy(znak,(char*)input[i],k);
+						break;
+					}
+				}
+				if(znak == NULL)
+				{
+					printf("Chyba pri nalezeni fce na pozici %d.\n",i);
+					smaz(root);
+					return NULL;
+				}
+				
+				kodFce = najdiFci(znak);
+				if(kodFce == 0)
+				{
+					printf("Chyba pri nalezeni fce na pozici %d.\n",i);
+					smaz(root);
+					return NULL;
+				}
+				else
+				{
+					root = vlozNaKonec(root, kodFce, 0);
 				}
 			}
 			
