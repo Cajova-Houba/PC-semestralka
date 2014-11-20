@@ -7,7 +7,7 @@
 
 int main(int argc, char *argv[])
 {
-	int len = 50,i,chyba=0;
+	int lenMax = 50, len = lenMax,i,chyba=0;
 	char vstup[len], vystup[len];
 	chrTkn *root = NULL;
 	chrTkn *postRoot = NULL;
@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 	for (i = 0; i < len; i++)
 	{
 		vystup[i] = '\0';
-		vstup[i] '\0';
+		vstup[i] = '\0';
 	}
 	
 	/*strcpy(vstup, "(5+(25-(5+(5-2^2)-3*2)+5)-2*5)\0");*/
@@ -35,6 +35,18 @@ int main(int argc, char *argv[])
         strcpy(vstup, "-2*4\0");
     }
    	printf("Vstup: %s\n",vstup);
+	/*zjisteni delky vstupu*/
+	len = 0;
+	for (i = 0; i < lenMax; i++)
+	{
+		if (!(vstup[i] == '\0'))
+		{
+			len++;
+		}
+	}
+	
+	
+	
 	
 	/*Prevedeni retezce na tokeny*/
 	root = preproc(len,vstup);

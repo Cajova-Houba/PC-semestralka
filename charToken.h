@@ -30,7 +30,7 @@ enum kodyFunkci{
     COSH,
     TANH,
     KRAT='*',
-    PLUS,
+    PLUS='+',
     MINUS='-',
     DELENO='/',
     MOCN='^',

@@ -302,11 +302,20 @@ int najdiFci(char *text)
  */
 chrTkn *preproc(int vstupLen, char input[])
 {
-	int i=0,cislo=0,k=0;
-	char *znak = NULL; /*ukazatel na cast retezce, ve kterem by melo byt jmeno fce*/
+	printf("Start preprocesingu.. ");
+	int i=0,cislo=0;
+	unsigned int k=0;
+	char znak[10];/*ukazatel na cast retezce, ve kterem by melo byt jmeno fce*/
 	int kodFce = 0;
 	
 	chrTkn *root = NULL;
+	
+	/*inicializace znak*/
+	for (i = 0; i < 10; i++)
+	{
+		znak[i] = '\0';
+	}
+	i=0;
 	
 	while(i < vstupLen)
 	{
@@ -336,13 +345,13 @@ chrTkn *preproc(int vstupLen, char input[])
 			}
 			
 			/*Promenna*/
-			if(input[i] == 'x')
+			else if(input[i] == 'x')
 			{
                         root = vlozNaKonec(root,input[i],0);
             }
             		
 			/*Cislo*/
-			if(input[i] >= '0' && input[i] <= '9')
+			else if(input[i] >= '0' && input[i] <= '9')
 			{
 				cislo = 0;
 				while(input[i] >='0' && input[i] <= '9' && i < vstupLen)
@@ -360,17 +369,24 @@ chrTkn *preproc(int vstupLen, char input[])
 			
 			/*Jiny znak nez promenna, bude potreba najit fci. Pokud bude nalezena pouze cast fce (napr si misto sin)
 			 * fce vrati NULL.*/
-			if ((input[i] >= 'a') && (input[i] <= 'z'))
+			else if ((input[i] >= 'a') && (input[i] <= 'z'))
 			{
 				/*Kontrola delky vstupu*/
-				for(k=5;k>1;k--)
+				k=0;
+				while(k<10)
 				{
-					if(i+k < vstupLen)
+					if((input[i+k] >= 'a') && (input[i+k]) <= 'z')
 					{
-						znak = strncpy(znak,(char*)input[i],k);
+						znak[k] = input[i+k];
+					}
+					else
+					{
 						break;
 					}
+					k++;
 				}
+				i += k;
+				
 				if(znak == NULL)
 				{
 					printf("Chyba pri nalezeni fce na pozici %d.\n",i);
@@ -389,6 +405,8 @@ chrTkn *preproc(int vstupLen, char input[])
 				{
 					root = vlozNaKonec(root, kodFce, 0);
 				}
+				
+				continue;
 			}
 			
 			/*
@@ -397,13 +415,15 @@ chrTkn *preproc(int vstupLen, char input[])
 			 * staci pridat na konec znak \0. Pri nacitani vstupu ze statickeho
 			 * pole se bez pouziti \0 objevuji artefakty.
 			 */ 
-			if(input[i] == '\0')
+			else if(input[i] == '\0')
 			{
+				printf("hotovo \n");
 				return root;
 			}
 			
 			i++;
 	}
 	
+	printf("hotovo\n");
 	return root;
 }
