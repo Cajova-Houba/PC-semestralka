@@ -7,6 +7,7 @@
 
 int main(int argc, char *argv[])
 {
+	/* Deklarace promennych */
 	int vstup_len = 200, res_len = 201, vyst_len = 50, i, len = 0; /*len je skutecna delka nacteneho vstupu*/
 	char vstup[vstup_len], out_name[vyst_len];  
 	char arg3[255], *omez; /*do arg3 se nakopiruje argument obsahujici omezeni, do omez uklada vysledek strtok()*/
@@ -105,9 +106,50 @@ int main(int argc, char *argv[])
 	}
 	
 	/* Zapsani vysledku do souboru */
+	zapisDoSouboru(out_name,res,res_len,omezeni);
 	
 	smaz(root);
 	smaz(postRoot);
 
 	return 0;
+}
+
+void zapisDoSouboru(char *fname, double values[][2], int val_len, double limits[])
+{
+	FILE *f_vystup = fopen(fname, "w");
+	int i;
+	char p[3], lnt[7], mvt[7];
+	strcpy(p,"%%");
+	strcpy(lnt,"lineto");
+	strcpy(mvt,"moveto");
+	
+	fprintf(f_vystup,"%%!PS-Adobe-3.0\n"); /*Hlavicka PostScript*/
+	fprintf(f_vystup,"%sCreator: Zdenek Vales\n",p); /*Autor*/
+	fprintf(f_vystup,"%sTitle: Vykresleni funkce\n",p);
+	fprintf(f_vystup,"%sEndComments\n",p); /*Konec hlavicky v prologu*/
+
+	fprintf(f_vystup,"1 setlinewidth\n"); /*Zacatek nove cesty*/
+	fprintf(f_vystup,"newpath\n");
+	/*fprintf(f_vystup,"0 0 moveto\n");*/
+	
+	fprintf(f_vystup, "%.3f %.3f moveto\n",(values[0][0]+fabs(limits[0]))*10,values[0][1]*10);
+	
+	for(i = 1; i < val_len; i++)
+	{
+		if (values[i][1] >= limits[2] && values[i][1] <= limits[3])
+		{
+			fprintf(f_vystup, "%.3f %.3f %s\n",(values[i][0]+fabs(limits[0]))*10,values[i][1]*10,lnt);
+		}
+		else
+		{
+			fprintf(f_vystup, "%.3f %.3f %s\n",(values[i][0]+fabs(limits[0]))*10,values[i][1]*10,mvt);
+		}
+	}
+	
+	/*fprintf(f_vystup,"closepath\n");*/
+	fprintf(f_vystup,"stroke\n");
+	fprintf(f_vystup,"showpage\n");
+	
+	fprintf(f_vystup,"%sEOF\n",p); /*Konec souboru*/
+	fclose(f_vystup);
 }
