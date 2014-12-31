@@ -494,7 +494,7 @@ int validateRPN(chrTkn *root)
 				cntr ++; /*vlozeni vysledku na zasobnik*/
 			}
 			
-			if(cntr < 0)
+			if(cntr <= 0)
 			{
 				return 1;
 			}
