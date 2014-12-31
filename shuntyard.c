@@ -250,6 +250,18 @@ int najdiFci(char *text)
 	{
 		return LOG;
 	}
+	else if(strstr(text,"sinh\0"))
+	{
+		return SINH;
+	}
+	else if(strstr(text,"cosh\0"))
+	{
+		return COSH;
+	}
+	else if(strstr(text,"tanh\0"))
+	{
+		return TANH;
+	}
 	else if(strstr(text,"sin\0"))
 	{
 		return SIN;
@@ -278,17 +290,9 @@ int najdiFci(char *text)
 	{
 		return ATAN;
 	}
-	else if(strstr(text,"sinh\0"))
+	else if(strstr(text,"acotan\0"))
 	{
-		return SINH;
-	}
-	else if(strstr(text,"cosh\0"))
-	{
-		return COSH;
-	}
-	else if(strstr(text,"tanh\0"))
-	{
-		return TANH;
+		return ACOTAN;
 	}
 	else
 	{
@@ -302,7 +306,9 @@ int najdiFci(char *text)
  */
 chrTkn *preproc(int vstupLen, char input[])
 {
+	#ifdef DBG
 	printf("Start preprocesingu.. ");
+	#endif
 	int i=0,cislo=0;
 	unsigned int k=0;
 	char znak[10];/*ukazatel na cast retezce, ve kterem by melo byt jmeno fce*/
@@ -325,7 +331,7 @@ chrTkn *preproc(int vstupLen, char input[])
 				/*Kontrola zda se nejedna o unarni - */ 
 				if(input[i] == '-')
 				{
-					if ((i == 0) || (input[i-1] == ')') || (input[i-1] == '(') || isOperator(input[i-1]))
+					if ((i == 0) || (input[i-1] == '(') || isOperator(input[i-1]))
 					{
 						root = vlozNaKonec(root,'_',0);
 					}
@@ -424,6 +430,8 @@ chrTkn *preproc(int vstupLen, char input[])
 			i++;
 	}
 	
+	#ifdef DBG
 	printf("hotovo\n");
+	#endif
 	return root;
 }

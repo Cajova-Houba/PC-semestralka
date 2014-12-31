@@ -26,6 +26,7 @@ enum kodyFunkci{
     ASIN,
     ACOS,
     ATAN,
+	ACOTAN,
     SINH,
     COSH,
     TANH,
