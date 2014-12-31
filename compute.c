@@ -202,7 +202,7 @@ double compute(chrTkn *root, double x_val)
 {
 	chrTkn *tmp = NULL;
 	/*vysledek prave provedene operace*/
-	double tmpRes = 0;
+	double tmpRes = 0, a = 0, b = 0;
 	int spLen = 255, sp = 0, i;
 	double stack[spLen];
 	char znak = '\0';

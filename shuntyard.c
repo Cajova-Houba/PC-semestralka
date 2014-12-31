@@ -112,7 +112,10 @@
 		{
 			/*Cislo - dej na vystup*/
 			vystup = vlozNaKonec(vystup,tmp->val,1);
-			/*printf("Nalezeno cislo %i, vlozeno na vystup\n",tmp->val);*/
+			
+			#ifdef DBG
+			printf("Nalezeno cislo %i, vlozeno na vystup\n",tmp->val);
+			#endif
 		}
 		else
 		{
@@ -130,7 +133,11 @@
 			if(isOperator(znak))
 			{
 				  op1 = znak;
-				  /*printf("Nalezen operator: %c. Zasobnik: %s\n",op1,stack);*/
+				  
+				  #ifdef DBG
+				  printf("Nalezen operator: %c. Zasobnik: %s\n",op1,stack);
+				  #endif
+				  
 				  /*
 				  * Dokud je na zasobniku operator, kontroluj prioritu a pripadne presun do vystupni fronty.
 				  */
@@ -173,7 +180,9 @@
 					  }
 				  }/*end while*/
 				  /*Vlozeni operatoru na zasobnik*/
-				  /*printf("Vkladam operator %c do zasobniku na pozici %d\n",op1,sp);*/
+				  #ifdef DBG
+				  printf("Vkladam operator %c do zasobniku na pozici %d\n",op1,sp);
+				  #endif
 				  push(&sp,stack,op1);
 			}/*end if operator*/
 			
@@ -182,7 +191,10 @@
 		    */
 		    if(znak == '(')
 		    {
-				/*printf("Nalezena leva zavorka. Vkladam na zasobnik na pozici %d.\n",sp);*/
+				#ifdef DBG
+				printf("Nalezena leva zavorka. Vkladam na zasobnik na pozici %d.\n",sp);
+				#endif
+				
 				push(&sp,stack,'(');
 			}
 			if(znak == ')')
@@ -193,7 +205,10 @@
 				 */
 				 while(show(&sp,stack) != '(')
 				 {
-					 /*printf("Vkladam znak %c do vystupu na pozici %d.\n",show(&sp,stack),cur);*/
+					 #ifdef DBG
+					 printf("Vkladam znak %c do vystupu na pozici %d.\n",show(&sp,stack),cur);
+					 #endif
+					 
 					 vystup = vlozNaKonec(vystup,pop(&sp,stack),0);
 					 /*postbuff[cur++] = pop(&sp,stack);*/
 					 
@@ -434,4 +449,62 @@ chrTkn *preproc(int vstupLen, char input[])
 	printf("hotovo\n");
 	#endif
 	return root;
+}
+
+/*
+Funkce jednoduchym algoritmem overi spravnost zadane postfixove notace.
+Pokud je vse v poradku, vrati 0.
+*/
+int validateRPN(chrTkn *root)
+{
+	int cntr = 0;
+	char znak = '\00';
+	chrTkn *tmp = root;
+	
+	if(tmp == NULL)
+	{
+		return 1;
+	}
+	
+	/*
+	Za kazde cislo +1, za bin operator -2, za un operator a fci -1.
+	Pokud cntr klesne pod 0 -> chyba. Pokud na konci cntr neni 1 -> chyba
+	*/
+	while (tmp != NULL)
+	{
+		if(tmp->jeCislo)
+		{
+			cntr++;
+		}
+		else
+		{
+			znak = tmp->val;
+			if(znak == 'x')
+			{
+				cntr ++;
+			}
+			else if(znak == PLUS || znak == MINUS || znak == KRAT || znak == DELENO || znak == MOCN)
+			{
+				cntr -= 2; /*vyber 2 hodnot ze zasobniku*/
+				cntr ++;   /*vlozeni vysledku na zasobnik*/
+			}
+			else if((znak >= ABS && znak <= TANH) || znak == UMIN)
+			{
+				cntr --; /*vyber jedne hodnoty ze zasobniku*/
+				cntr ++; /*vlozeni vysledku na zasobnik*/
+			}
+			
+			if(cntr < 0)
+			{
+				return 1;
+			}
+		}
+		
+		tmp = tmp->dalsi;
+	}
+	
+	if (cntr == 1)
+	{
+		return 0;
+	}
 }

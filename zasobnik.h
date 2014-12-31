@@ -8,4 +8,7 @@ void pushd(int *sp, double stck[], double cislo);
 double popd(int *sp, double stck[]);
 double showd(int *sp, double stck[]);
 
+/*Flagy podteceni zasobniku*/
+extern UFc,UFd;
+
 #endif
