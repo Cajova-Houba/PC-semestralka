@@ -507,4 +507,6 @@ int validateRPN(chrTkn *root)
 	{
 		return 0;
 	}
+	
+	return 1;
 }

@@ -46,9 +46,35 @@ enum kodyFunkci{
  * seznamu.
  */
 chrTkn *vlozNaKonec(chrTkn *r, int value, int jeCislo);
+
+/*
+ * Funkce vytvori a inicialiuje novy token, ktery vrati jako vysledek.
+ */
 chrTkn *createToken(int value, int jeCislo);
+
+/*
+ * Funkce vypise zadany seznam tokenu na jeden radek.
+ */
 void vypis(chrTkn *r);
+
+/*
+ * Funkce rekurzivne smaze dodany seznam tokenu.
+ */
 void smaz(chrTkn *r);
+
+/*
+ * Funkce vypise zadany seznam tokenu jako ASCII hodnoty.
+ */
 void vypisASCII(chrTkn *r);
+
+/*
+ * Funkce zkopiruje obsah jednoho tokenu do druheho, nekopiruje vsak odkaz na dalsi token. 
+ */
+void copy(chrTkn *source, chrTkn *dest);
+
+/*
+ * Funkce vrati znakovou hodnotu tokenu. Pokud je token ciselny, vrati \0.
+ */
+char getValc(chrTkn *source);
 
 #endif

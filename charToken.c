@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include "charToken.h"
 
+/*
+ * Funkce vytvori a inicialiuje novy token, ktery vrati jako vysledek.
+ */
 chrTkn *createToken(int value, int jeCislo)
 {
 	chrTkn *res;
@@ -39,6 +42,9 @@ chrTkn *vlozNaKonec(chrTkn *r, int value, int jeCislo)
 	return r;
 }
 
+/*
+ * Funkce rekurzivne smaze dodany seznam tokenu.
+ */
 void smaz(chrTkn *r)
 {
 	if(r->dalsi != NULL)
@@ -48,6 +54,9 @@ void smaz(chrTkn *r)
 	free(r);
 }
 
+/*
+ * Funkce vypise zadany seznam tokenu na jeden radek.
+ */
 void vypis(chrTkn *r)
 {
 	chrTkn *tmp = NULL;
@@ -72,6 +81,9 @@ void vypis(chrTkn *r)
 	printf("\n");
 }
 
+/*
+ * Funkce vypise zadany seznam tokenu jako ASCII hodnoty.
+ */
 void vypisASCII(chrTkn *r)
 {
 	chrTkn *tmp = NULL;
@@ -83,7 +95,7 @@ void vypisASCII(chrTkn *r)
 	tmp = r;
 	while(tmp != NULL)
 	{
-		printf("Znak: %i\n",tmp->val);
+		printf("Znak: %d\n",tmp->val);
 		tmp = tmp->dalsi;
 	}
 	printf("\n");

@@ -1,0 +1,33 @@
+#Makefile k sestaveni proramu graph.exe pro windows
+CC=cl #kompilator
+LDFLAGS=\Fe #volby linkeru, nastaveni jmena vystupu
+OUT=graph.exe #vystup
+RMV=del #prikaz na smazani
+OBJ=main.obj zapisovac.obj charToken.obj zasobnik.obj shuntyard.obj compute.obj #soubory k linkovani
+
+#pravidla
+all: program clean
+
+program: $(OBJ)
+	$(CC) $(OBJ) $(LDFLAGS)$(OUT)
+
+main.o: main.c charToken.h shuntyard.h compute.h zapisovac.h
+	$(CC) main.c
+
+zapisovac.o: zapisovac.c
+	$(CC) zapisovac.c
+
+charToken.o: charToken.c
+	$(CC) charToken.c
+	
+zasobnik.o: zasobnik.c
+	$(CC) zasobnik.c
+	
+shuntyard.o: shuntyard.c
+	$(CC) shuntyard.c
+	
+compute.o: compute.c
+	$(CC) compute.c
+	
+clean:
+	$(RMV) *.obj

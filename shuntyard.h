@@ -16,6 +16,7 @@ chrTkn *preproc(int vstupLen, char input[]);
 Funkce provede ShuntingYard algoritmus nad zadanym tokenovym vstupem a vysledek vrati jako seznam tokenu.
 */
 chrTkn *shuntingYard(chrTkn *vstup);
+
 /*
 Funkce jednoduchym algoritmem overi spravnost zadane postfixove notace.
 Pokud je vse v poradku, vrati 0.

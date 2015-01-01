@@ -202,9 +202,11 @@ double compute(chrTkn *root, double x_val)
 {
 	chrTkn *tmp = NULL;
 	/*vysledek prave provedene operace*/
-	double tmpRes = 0, a = 0, b = 0;
-	int spLen = 255, sp = 0, i;
-	double stack[spLen];
+	double tmpRes = 0;
+	/*kompilator visual studio 2013 nebere deklaraci pole o delce udane promennou spLen*/
+	#define SPLEN 255 
+	int spLen = SPLEN, sp = 0, i;
+	double stack[SPLEN];
 	char znak = '\0';
 	tmp = root;
 	

@@ -16,12 +16,16 @@ void vypisChybu(char *err)
 int main(int argc, char *argv[])
 {
 	/* Deklarace promennych */
-	int vstup_len = 200, res_len = 401, vyst_len = 50, i, len = 0; /*len je skutecna delka nacteneho vstupu*/
-	char vstup[vstup_len], out_name[vyst_len];  
+	/*kompilator visual studio 2013 nebere deklaraci delky poli vstup,out_name a res z promennych*/
+	#define VSTUP_LEN 200
+	#define VYST_LEN 50
+	#define RES_LEN 401
+	int vstup_len = VSTUP_LEN, res_len = RES_LEN, vyst_len = VYST_LEN, i, len = 0; /*len je skutecna delka nacteneho vstupu*/
+	char vstup[VSTUP_LEN], out_name[VYST_LEN];  
 	char arg3[255], *omez; /*do arg3 se nakopiruje argument obsahujici omezeni, do omez uklada vysledek strtok()*/
 	chrTkn *root = NULL;   /*Seznam tokenu pred prevedenim na postfix*/
 	chrTkn *postRoot = NULL;  /*Seznam tokenu prevedeny na postfix*/
-	double res[res_len][2], x_val = 0.0;  /*pole pro vysledky ve tvaru [x,f(x)]*/
+	double res[RES_LEN][2], x_val = 0.0;  /*pole pro vysledky ve tvaru [x,f(x)]*/
 	double omezeni[4] = {-10.0 , 10.0 , -10.0 , 10.0}; /*omezeni ve tvaru x_min,x_max,y_min,y_max*/
 	double krok; /*krok pro x*/
 	double y_min,y_max;

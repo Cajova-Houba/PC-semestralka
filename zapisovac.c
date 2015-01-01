@@ -43,9 +43,9 @@ void zapisDoSouboru(char *fname, double values[][2], int val_len, double limits[
 	/*normalizace hodnot*/
 	/*for(i = 1; i < val_len; i++)
 	{
-		values[i][0] -= limits[0]; /*x hodnota - x_min*/
-		/*values[i][1] -= limits[2]; /*y hodnota - y_min*/
-	/*}*/
+		values[i][0] -= limits[0]; x hodnota - x_min
+		values[i][1] -= limits[2]; y hodnota - y_min
+	}*/
 	
 	fprintf(f_vystup,"%%!PS-Adobe-3.0\n"); /*Hlavicka PostScript*/
 	fprintf(f_vystup,"%sCreator: Zdenek Vales\n",p); /*Autor*/
@@ -78,7 +78,7 @@ void zapisDoSouboru(char *fname, double values[][2], int val_len, double limits[
 	fprintf(f_vystup,"matrix currentmatrix \nnewpath \n%d %d translate \n",odsazenix,odsazeniy);
 	for(i = 0; i < pocx; i++)
 	{
-		fprintf(f_vystup,"%.3f 0 carkax \n",krokx*meritko,kroky*meritko);
+		fprintf(f_vystup,"%.3f 0 carkax \n",krokx*meritko);
 	}
 	fprintf(f_vystup,"setmatrix \nstroke \n\n");
 	
