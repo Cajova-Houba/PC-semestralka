@@ -8,11 +8,17 @@
 #include "zapisovac.h"
 /*#define DBG*/
 
+/*
+ * Vypise dodanou chybu.
+ */
 void vypisChybu(char *err)
 {
 	printf("Error: %s\n",err);
 }
 
+/*
+ * Hlavni funkce programu. Nacita hodnoty z argumentu, vola vykonavaci funkce.
+ */
 int main(int argc, char *argv[])
 {
 	/* Deklarace promennych */

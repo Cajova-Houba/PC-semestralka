@@ -67,28 +67,32 @@ void zapisDoSouboru(char *fname, double values[][2], int val_len, double limits[
 	
 	/*carky na ose x - definice*/
 	delkac = 5.0;
-	fprintf(f_vystup,"/carkax {\ntranslate \n0 0 moveto \n0 %.3f lineto \n",delkac); /*carka ve spod*/
-	fprintf(f_vystup,"0 %.3f moveto \n0 %.3f lineto \n} def \n\n",delkay*meritko,delkay*meritko-delkac); /*carka nahore*/
+	fprintf(f_vystup,"/carkax {\nnewpath \n0 0 0 setrgbcolor \ntranslate \n0 0 moveto \n0 %.3f lineto \n",delkac); /*carka ve spod*/
+	fprintf(f_vystup,"0 %.3f moveto \n0 %.3f lineto \nstroke \n",delkay*meritko,delkay*meritko-delkac); /*carka nahore*/
+	/*cara uprostred, ma jinou barvu nez ostatni cary na osach a osy prekryva, osetreno podminkou*/
+	fprintf(f_vystup,"1 eq {newpath 0.5 0.5 0.5 setrgbcolor 0 %.3f moveto 0 %.3f lineto stroke } if\n} def \n\n",delkac,delkay*meritko-delkac);
 	
 	/*carky na ose y - definice*/
-	fprintf(f_vystup,"/carkay {\ntranslate \n0 0 moveto \n%3.f 0 lineto \n",delkac); /*carka v levo*/
-	fprintf(f_vystup,"%.3f 0 moveto \n%3.f 0 lineto \n} def \n\n",delkax*meritko,delkax*meritko-delkac); /*carka v levo*/
+	fprintf(f_vystup,"/carkay {\nnewpath \n0 0 0 setrgbcolor \ntranslate \n0 0 moveto \n%3.f 0 lineto \n",delkac); /*carka v levo*/
+	fprintf(f_vystup,"%.3f 0 moveto \n%3.f 0 lineto \nstroke \n",delkax*meritko,delkax*meritko-delkac); /*carka v levo*/
+	/*cara uprostred, ma jinou barvu nez ostatni cary na osach a osy prekryva, osetreno podminkou*/
+	fprintf(f_vystup,"1 eq {newpath 0.5 0.5 0.5 setrgbcolor %.3f 0 moveto %.3f 0 lineto stroke} if\n} def \n\n",delkac,delkax*meritko-delkac);
 	
 	/*carky na ose x - vykresleni*/
-	fprintf(f_vystup,"matrix currentmatrix \nnewpath \n%d %d translate \n",odsazenix,odsazeniy);
+	fprintf(f_vystup,"matrix currentmatrix \n%d %d translate \n",odsazenix,odsazeniy);
 	for(i = 0; i < pocx; i++)
 	{
-		fprintf(f_vystup,"%.3f 0 carkax \n",krokx*meritko);
+		fprintf(f_vystup,"%d %.3f 0 carkax \n",(i<pocx-1),krokx*meritko);
 	}
-	fprintf(f_vystup,"setmatrix \nstroke \n\n");
+	fprintf(f_vystup,"setmatrix \n\n");
 	
 	/*carky na ose y - vykresleni*/
-	fprintf(f_vystup,"matrix currentmatrix \nnewpath \n%d %d translate \n",odsazenix,odsazeniy);
+	fprintf(f_vystup,"matrix currentmatrix \n%d %d translate \n",odsazenix,odsazeniy);
 	for(i = 0; i < pocy; i++)
 	{
-		fprintf(f_vystup,"0 %.3f carkay \n",kroky*meritko);
+		fprintf(f_vystup,"%d 0 %.3f carkay \n",(i<pocy-1),kroky*meritko);
 	}
-	fprintf(f_vystup,"setmatrix \nstroke \n\n");
+	fprintf(f_vystup,"setmatrix \n0 0 0 setrgbcolor \n\n\n");
 	
 	/*popisky na osach*/
 	fprintf(f_vystup,"/popisx {\ntranslate \n0 0 moveto \ntrue charpath \n} def\n\n/popisy {\ntranslate \n0 0 moveto \ntrue charpath \n} def\n\n");
@@ -103,7 +107,7 @@ void zapisDoSouboru(char *fname, double values[][2], int val_len, double limits[
 	fprintf(f_vystup,"setmatrix \nstroke\n\n");
 	
 	/*y*/
-	fprintf(f_vystup,"matrix currentmatrix \n%d %d translate \n",odsazenix/3,odsazeniy);
+	fprintf(f_vystup,"matrix currentmatrix \n%d %d translate \n",odsazenix/4,odsazeniy);
 	fprintf(f_vystup,"(%.2f) 0 0 popisy\n",limits[2]);
 	for(i = 1; i <= pocy; i++)
 	{

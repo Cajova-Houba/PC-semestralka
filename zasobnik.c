@@ -57,7 +57,7 @@ int UFc = 0, UFd = 0;
   * doublovym zasobnikem.
   */
 /*
- * Funkce vlozi znak na vrchol zasobniku.
+ * Funkce vlozi hodnotu na vrchol zasobniku.
  */
  void pushd(int *sp, double stck[], double cislo)
  {

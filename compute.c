@@ -15,21 +15,25 @@
 #define PI 3.14159265
 
 /* Standardni operatory a fce*/
+/*Scitani*/
 double addD(double a, double b)
 {
 	return a+b;
 }
 
+/*Odcitani*/
 double subD(double a, double b)
 {
 	return a-b;
 }
 
+/*Nasobeni*/
 double mulD(double a, double b)
 {
 	return a*b;
 }
 
+/*Deleni*/
 double divD(double a, double b)
 {
 	double tmp;
@@ -47,6 +51,7 @@ double divD(double a, double b)
 	}
 }
  
+/*Mocnina*/ 
 double powD(double a, double exp)
 {
 	double tmp;
@@ -65,6 +70,7 @@ double powD(double a, double exp)
 }
 
 /* Ostatni fce */
+/*e^a*/
 double expD(double a)
 {
 	double tmp;
@@ -82,6 +88,7 @@ double expD(double a)
 	}
 }
 
+/*Prirozeny logaritmus a*/
 double lnD(double a)
 {
 	double tmp;
@@ -99,6 +106,7 @@ double lnD(double a)
 	}
 }
 
+/*Desitkovy lgoaritmus a*/
 double logD(double a)
 {
 	double tmp;
@@ -117,27 +125,32 @@ double logD(double a)
 }
 
 /* Goniometricke fce*/
+/*sin*/
 double sinD(double a)
 {
     return sin(a);
 }
 
+/*cos*/
 double cosD(double a)
 {
     return cos(a);
 }
 
+/*tangens*/
 double tanD(double a)
 {
 	return tan(a);
 }
 
+/*cotangens*/
 double cotanD(double a)
 {
 	return 1/(tan(a));
 }
 
 /* Cyklometricke fce*/
+/*arcsin*/
 double asinD(double a)
 {
     if(a > 1)
@@ -153,6 +166,7 @@ double asinD(double a)
 	return asin(a);
 }
 
+/*arccos*/
 double acosD(double a)
 {
     if(a > 1)
@@ -168,36 +182,44 @@ double acosD(double a)
 	return acos(a);
 }
 
+/*arctg*/
 double atanD(double a)
 {
 	return atan(a);
 }
 
+/*arccotg*/
 double acotanD(double a)
 {
 	return (PI/2 - atan(a));
 }
 
 /* Hyperbolicke fce*/
+/*hyperbolicky sinus*/
 double sinhD(double a)
 {
 	/*sinh(x) = (e^(2x) - 1)/(2*e^x)*/
     return (expD(2*a) - 1)/(2*expD(a));
 }
 
+/*hyperbolicky cosinus*/
 double coshD(double a)
 {
 	/*cosh(x) = (e^(2x) + 1)/(2*e^x)*/
     return (expD(2*a) + 1)/(2*expD(a));
 }
 
+/*hyperbolicky tangens*/
 double tanhD(double a)
 {
 	/*tanh(x) = sinh(x)/cosh(x)*/
 	return sinh(a)/cosh(a);
 }
 
- 
+/*
+ * Funkce spocita hodnotu vyrazu zadaneho seznamem tokenu v postfixove notaci.
+ * Pokud fce v seznamu tokenu narazi na promennou, nahradi ji hodnotou x_val.
+ */ 
 double compute(chrTkn *root, double x_val)
 {
 	chrTkn *tmp = NULL;

@@ -2,8 +2,10 @@
 #define COMPUTE_H
 #include "charToken.h"
 
-/*Funkce spocita zadany matematicky vyraz. Pokud
-natazi na promennou 'x' nahradi ji hodnotou x_val.*/
+/*
+ * Funkce spocita hodnotu vyrazu zadaneho seznamem tokenu v postfixove notaci.
+ * Pokud fce v seznamu tokenu narazi na promennou, nahradi ji hodnotou x_val.
+ */ 
 double compute(chrTkn *root, double x_val);
 
 #endif
