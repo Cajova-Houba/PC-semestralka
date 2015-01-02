@@ -79,7 +79,7 @@
  }
  
  /*Funkce kontroluje preteceni znakoveho zasobniku*/
- void checkOF(char znak)
+ int checkOFc(char znak)
 {
 	if(OFd)
 	{
@@ -202,7 +202,7 @@
 				printf("Vkladam operator %c do zasobniku na pozici %d\n",op1,sp);
 				#endif
 				push(&sp,stack,op1,STACK_LEN);
-				if(checkOF(op1)
+				if(checkOFc(op1))
 				{
 					return NULL;	
 				}
@@ -218,6 +218,10 @@
 				#endif
 				
 				push(&sp,stack,'(',STACK_LEN);
+				if(checkOFc('('))
+				{
+					return NULL;	
+				}
 			}
 			if(znak == ')')
 			{
