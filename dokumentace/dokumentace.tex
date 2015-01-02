@@ -1,10 +1,28 @@
-\documentclass[a4paper,12pt]{article}
-\usepackage[cp1250]{inputenc}
-\usepackage[czech]
+% hlavicka dokumentu
+\documentclass 	[a4paper,12pt]	{article}
+\usepackage 	[czech]		{babel}		
+\usepackage 	[utf8]			{inputenc}
+
+%dokument
 \begin{document}
-Zadání
-Analýza úlohy
-Popis implementace
-Uživatelská příručka
-Závěr
+\section{Zadání}
+Naprogramujte v ANSI C přenositelnou konzolovou aplikaci, která jako vstup načte z parametru na příkazové řádce matematickou funkci ve tvaru y = f(x), provede její analýzu a vytvoří
+soubor ve formátu PostScript s grafem této funkce na zvoleném definičním oboru.Program se bude spouštět příkazem graph.exe $<$func$>$ $<$out-file$>$ [$<$imits$>$] 
+\section{Analýza úlohy}
+Počáteční problém úlohy je zejména parsování vstupu. Program má být schopen vykreslit graf libovolné funkce, úlohu tedy nelze řešit hrubou silou (například hledáním výrazu ${x}^{2}$ ve vstupním řetězci). Libovolnou funkci lze rozpoznat převodem (nebo úpravou) řetězce na strukturu, která lze za běhu programu vyčíslit. Převod je možné provést několika způsoby - syntaktická analýza, ShuntigYard, binární strom... Já jsem, vzhledem k nejmenší obtížnosti, zvolil převod z infixové notace na notaci postfixovou tokenizací vstupu a algoritmem ShuntingYard.
+
+Dílčím problémem je ověření pravosti postfixového výrazu. Je nepřípustné, aby byl vstup $x+1+$ převedený na postfixovou notaci $x1++$, vyčíslitelný. Validace postfixové notace úzce souvisí s jejím vyčíslením, které je realizované zásobníkem. Při validaci je místo zásobníku použito počítadlo a následující pravidla:
+\begin{enumerate}
+\item Počítadlo je na začátku 0.
+\item Pokud počítadlo při dekrementaci klesne pod 0, výraz je chybný.
+\item Pokud je symbol číslo, nebo proměnná, zvyš počítadlo o 1.
+\item Pokud je symbol únární operátor, sniž počítadlo o 1, následně jej o 1 zvyš.
+\item Pokud je symbol binární operátor, sniž počítadlo o 2, následně jej o 1 zvyš.
+\item Pokud je po projetí výrazu počítadlo 0, výraz je prázdný. Pokud je 1, výraz je správný, pokud je počítadlo cokoliv jiného, výraz je chybný.
+\end{enumerate}  
+
+
+\section{Popis implementace}
+\section{Uživatelská příručka}
+\section{Závěr}
 \end{document}
