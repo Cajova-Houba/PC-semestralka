@@ -8,6 +8,7 @@
 #include "charToken.h"
 #include "zasobnik.h"
 
+/*#define DBG*/
 /*
  * Funkce zjisti, zda je zadany znak matematicky operator.
  */
@@ -77,6 +78,22 @@
 	 } 
  }
  
+ /*Funkce kontroluje preteceni znakoveho zasobniku*/
+ void checkOF(char znak)
+{
+	if(OFd)
+	{
+		#ifdef DBG 
+		printf("Error: Stack overflow at %c symbol.\n",znak);
+		#endif
+		
+		OFd = 0;
+		return 1;
+	}
+	
+	return 0;
+}
+ 
  /*
   * Funkce precte dodany seznam tokenu a vrati novy seznam, kde tokeny
   * tvori matematicky vyraz v postfixove notaci.
@@ -95,7 +112,7 @@
 	
 	if (vstup == NULL)
 	{
-		printf("Chyba: NULL na vstupu.\n");
+		printf("Error: NULL input.\n");
 		return NULL;
 	}
 	
@@ -133,58 +150,62 @@
 			/*Operator*/
 			if(isOperator(znak))
 			{
-				  op1 = znak;
+				op1 = znak;
 				  
-				  #ifdef DBG
-				  printf("Nalezen operator: %c. Zasobnik: %s\n",op1,stack);
-				  #endif
+				#ifdef DBG
+				printf("Nalezen operator: %c. Zasobnik: %s\n",op1,stack);
+				#endif
 				  
-				  /*
-				  * Dokud je na zasobniku operator, kontroluj prioritu a pripadne presun do vystupni fronty.
-				  */
-				  while(isOperator(show(&sp,stack)))
-				  {
-					  op2 = show(&sp,stack);
-					  /*printf("Zasobnik: %s\n Operator: %c",stack,op2);*/
+				/*
+				* Dokud je na zasobniku operator, kontroluj prioritu a pripadne presun do vystupni fronty.
+				*/
+				while(isOperator(show(&sp,stack)))
+				{
+					op2 = show(&sp,stack);
+					/*printf("Zasobnik: %s\n Operator: %c",stack,op2);*/
 					  
-					  /*Asociace zleva*/
-					  if(asocZleva(op1))
-					  {
-						  /*
-						  * vkladej operatory ze zasobniku na vystup dokud bude jejich priorita vetsi nebo rovna 
-						  * priorite prave proverovaneho operatoru. Pak dej proverovany operator na zasobnik
-						  */
-						  if(getPriority(op1) <= getPriority(op2)) 
-						  {
-							  /*printf("Davam operator %c do vystupu na pozici %d.\n",op2,cur);*/
-							  vystup = vlozNaKonec(vystup,pop(&sp,stack),0);
-						  }
-						  else
-						  {
-							  break;
-						  }
-					  }
-					  else
-					  {
-						  /*
-						  * Stejne jako u asociace zleva, pouze op1 < op2
-						  */
-						  if(getPriority(op1) < getPriority(op2)) 
-						  {
-							  /*printf("Davam operator %c do vystupu na pozici %d.\n",op2,cur);*/
-							  vystup = vlozNaKonec(vystup,pop(&sp,stack),0);
-						  }
-						  else
-						  {
-							  break;
-						  }
-					  }
-				  }/*end while*/
-				  /*Vlozeni operatoru na zasobnik*/
-				  #ifdef DBG
-				  printf("Vkladam operator %c do zasobniku na pozici %d\n",op1,sp);
-				  #endif
-				  push(&sp,stack,op1,STACK_LEN);
+					/*Asociace zleva*/
+					if(asocZleva(op1))
+					{
+						/*
+						* vkladej operatory ze zasobniku na vystup dokud bude jejich priorita vetsi nebo rovna 
+						* priorite prave proverovaneho operatoru. Pak dej proverovany operator na zasobnik
+						*/
+						if(getPriority(op1) <= getPriority(op2)) 
+						{
+							/*printf("Davam operator %c do vystupu na pozici %d.\n",op2,cur);*/
+							vystup = vlozNaKonec(vystup,pop(&sp,stack),0);
+						}
+							else
+							{
+								break;
+							}
+						}
+						else
+						{
+							/*
+							* Stejne jako u asociace zleva, pouze op1 < op2
+							*/
+							if(getPriority(op1) < getPriority(op2)) 
+							{
+								/*printf("Davam operator %c do vystupu na pozici %d.\n",op2,cur);*/
+								vystup = vlozNaKonec(vystup,pop(&sp,stack),0);
+							}
+							else
+							{
+								break;
+							}
+						}
+				}/*end while*/
+				/*Vlozeni operatoru na zasobnik*/
+				#ifdef DBG
+				printf("Vkladam operator %c do zasobniku na pozici %d\n",op1,sp);
+				#endif
+				push(&sp,stack,op1,STACK_LEN);
+				if(checkOF(op1)
+				{
+					return NULL;	
+				}
 			}/*end if operator*/
 			
 		   /*
@@ -201,27 +222,27 @@
 			if(znak == ')')
 			{
 				/*
-				 * Dokud na vrcholu zasobniku neni leva zavorka, davej znaky na vystup.
-				 * Levou zavorku na vystup nedavej, pouze vyjmi ze  zasobniku.
-				 */
-				 while(show(&sp,stack) != '(')
-				 {
-					 #ifdef DBG
-					 printf("Vkladam znak %c do vystupu na pozici %d.\n",show(&sp,stack),cur);
-					 #endif
+				* Dokud na vrcholu zasobniku neni leva zavorka, davej znaky na vystup.
+				* Levou zavorku na vystup nedavej, pouze vyjmi ze  zasobniku.
+				*/
+				while(show(&sp,stack) != '(')
+				{
+					#ifdef DBG
+					printf("Vkladam znak %c do vystupu na pozici %d.\n",show(&sp,stack),cur);
+					#endif
 					 
-					 vystup = vlozNaKonec(vystup,pop(&sp,stack),0);
-					 /*postbuff[cur++] = pop(&sp,stack);*/
+					vystup = vlozNaKonec(vystup,pop(&sp,stack),0);
+					/*postbuff[cur++] = pop(&sp,stack);*/
 					 
-					 /*Neuzavreny vyraz*/
-					 if(sp == 0)
-					 {
-						 printf("Chyba: Neuzavreny vyraz.\n");
-						 return NULL;
-					 }
-				 }
-				 /*vyjmuti leve zavorky ze zasobniku*/
-				 pop(&sp,stack);
+					/*Neuzavreny vyraz*/
+					if(sp == 0)
+					{
+						printf("Error: Unclosed bracket.\n");
+						return NULL;
+					} 
+				}
+				/*vyjmuti leve zavorky ze zasobniku*/
+				pop(&sp,stack);
 			}
 		}
 		
@@ -233,7 +254,7 @@
 		/*printf("%d : %s\n",sp,stack);*/
 		if(show(&sp,stack) == '(')
 		{
-			printf("Chyba: Neuzavreny vyraz.\n");
+			printf("Error: Unclosed bracket.\n");
 			return NULL;
 		}
         vystup = vlozNaKonec(vystup,pop(&sp,stack),0);
@@ -411,7 +432,7 @@ chrTkn *preproc(int vstupLen, char input[])
 				
 				if(znak == NULL)
 				{
-					printf("Chyba pri nalezeni fce na pozici %d.\n",i);
+					printf("Error when finding function at %d. position.\n",i);	
 					smaz(root);
 					return NULL;
 				}
@@ -419,7 +440,7 @@ chrTkn *preproc(int vstupLen, char input[])
 				kodFce = najdiFci(znak);
 				if(kodFce == 0)
 				{
-					printf("Chyba pri nalezeni fce na pozici %d.\n",i);
+					printf("Error when finding function at %d. position.\n",i);
 					smaz(root);
 					return NULL;
 				}

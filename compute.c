@@ -223,9 +223,10 @@ int checkOF(double value)
 	if(OFd)
 	{
 		#ifdef DBG 
-		printf("Chyba: preteceni zasobniku pri hodnote %.3f.\n",tmp->val);
+		printf("Chyba: preteceni zasobniku pri hodnote %.3f.\n",value);
 		#endif
 		
+		OFd = 0;
 		return 1;
 	}
 	

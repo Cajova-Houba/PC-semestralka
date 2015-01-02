@@ -119,6 +119,12 @@ int main(int argc, char *argv[])
 	/* Prevedeni na postfix notaci */
 	postRoot = shuntingYard(root);
 	
+	if(postRoot == NULL)
+	{
+		/*shuntingYard si chyby vypisuje sam*/
+		return 6;
+	}
+	
 	#ifdef DBG
 	printf("Postfix: ");
 	vypis(postRoot);
