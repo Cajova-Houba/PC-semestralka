@@ -1,23 +1,34 @@
 /*
  * Knihovna funkci slouzicich pro praci se zasobnikem. 
  */
-
+#include <stdio.h>
 #include "zasobnik.h"
 
 /*podteceni znakoveho zasobniku, podteceni double zasobniku*/
 int UFc = 0, UFd = 0;
+/*preteceni znakoveho a double zasobniku*/
+int OFc = 0, OFd = 0;
 
 /*
  * Funkce vlozi znak na vrchol zasobniku.
+ * Pokud dojde k preteceni, fce nastavi flag OFc na 1.
  */
- void push(int *sp, char stck[], char znak)
+ void push(int *sp, char stck[], char znak, int stck_len)
  {
-	 stck[*sp] = znak;
-	 (*sp)++;
+	OFc = 0;
+	if((*sp) == stck_len)
+	{
+		/*printf("Error: Stack overflow at %c symbol.\n",znak);*/
+		OFc = 1;
+		return;
+	}
+	stck[*sp] = znak;
+	(*sp)++;
  }
  
 /*
  * Funkce vybere znak z vrcholu zasobniku.
+ * Pokud dojde k podteceni, fce vrati \0 a nastavi flag UFc na 1.
  */
  char pop(int *sp, char stck[])
  {
@@ -36,7 +47,8 @@ int UFc = 0, UFd = 0;
  }
   
 /*
- * Funkce ukaze znak na vrcholu zasobniku.
+ * Funkce ukaze znak na vrcholu zasobniku. 
+ * Pokud dojde k podteceni, fce vrati \0 a nastavi flag UFc na 1.
  */
  char show(int *sp, char stck[])
  {
@@ -58,15 +70,24 @@ int UFc = 0, UFd = 0;
   */
 /*
  * Funkce vlozi hodnotu na vrchol zasobniku.
+ * Pokud dojde k preteceni, fce nastavi flag OFd na 1.
  */
- void pushd(int *sp, double stck[], double cislo)
+ void pushd(int *sp, double stck[], double cislo, int stck_len)
  {
-	 stck[*sp] = cislo;
-	 (*sp)++;
+	OFd = 0;
+	if((*sp) == stck_len)
+	{
+		/*printf("Error: Stack overflow at %.3f value.\n",cislo);*/
+		OFd = 1;
+		return;
+	}
+	stck[*sp] = cislo;
+	(*sp)++;
  }
  
 /*
  * Funkce vybere znak z vrcholu zasobniku.
+ * Pokud dojde k podteceni, fce vrati 0.0 a nastavi flag UFd na 1.
  */
  double popd(int *sp, double stck[])
  {
@@ -86,6 +107,7 @@ int UFc = 0, UFd = 0;
   
 /*
  * Funkce ukaze znak na vrcholu zasobniku.
+ * Pokud dojde k podteceni, fce vrati 0.0 a nastavi flag UFd na 1.
  */
  double showd(int *sp, double stck[])
  {

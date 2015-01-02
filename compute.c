@@ -13,6 +13,7 @@
 #include "compute.h"
 
 #define PI 3.14159265
+/*#define DBG*/
 
 /* Standardni operatory a fce*/
 /*Scitani*/
@@ -216,6 +217,21 @@ double tanhD(double a)
 	return sinh(a)/cosh(a);
 }
 
+/*Funkce kontroluje flagy double zasobniku*/
+int checkOF(double value)
+{
+	if(OFd)
+	{
+		#ifdef DBG 
+		printf("Chyba: preteceni zasobniku pri hodnote %.3f.\n",tmp->val);
+		#endif
+		
+		return 1;
+	}
+	
+	return 0;
+}
+
 /*
  * Funkce spocita hodnotu vyrazu zadaneho seznamem tokenu v postfixove notaci.
  * Pokud fce v seznamu tokenu narazi na promennou, nahradi ji hodnotou x_val.
@@ -244,7 +260,11 @@ double compute(chrTkn *root, double x_val)
 		if(tmp->jeCislo)
 		{
 			/*vlozeni cisla na zasobnik*/
-			pushd(&sp,stack,(double)tmp->val);
+			pushd(&sp,stack,(double)tmp->val,SPLEN);
+			if(checkOF(tmp->val))
+			{	
+				return 0.0;
+			}
 		}
 		else
 		{
@@ -323,7 +343,11 @@ double compute(chrTkn *root, double x_val)
 			
 			
 			/*vlozeni vysledku oprace na zasobnik*/
-			pushd(&sp,stack,tmpRes);
+			pushd(&sp,stack,tmpRes,SPLEN);
+			if(checkOF(tmp->val))
+			{	
+				return 0.0;
+			}
 		}
 		
 		tmp = tmp->dalsi;

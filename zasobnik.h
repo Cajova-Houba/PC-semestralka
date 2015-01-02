@@ -3,16 +3,19 @@
 
 /*
  * Funkce vlozi znak na vrchol zasobniku.
+ * Pokud dojde k preteceni, fce nastavi flag OFc na 1.
  */
-void push(int *sp, char stck[], char znak);
+void push(int *sp, char stck[], char znak, int stck_len);
 
 /*
- * Funkce vybere znak z vrcholu zasobniku.
+ * Funkce ukaze znak na vrcholu zasobniku. 
+ * Pokud dojde k podteceni, fce vrati \0 a nastavi flag UFc na 1.
  */
 char pop(int *sp, char stck[]);
 
 /*
- * Funkce ukaze znak na vrcholu zasobniku.
+ * Funkce ukaze znak na vrcholu zasobniku. 
+ * Pokud dojde k podteceni, fce vrati \0 a nastavi flag UFc na 1.
  */
 char show(int *sp, char stck[]);
 
@@ -23,20 +26,26 @@ char show(int *sp, char stck[]);
   */
 /*
  * Funkce vlozi hodnotu na vrchol zasobniku.
+ * Pokud dojde k preteceni, fce nastavi flag OFd na 1.
  */
-void pushd(int *sp, double stck[], double cislo);
+void pushd(int *sp, double stck[], double cislo, int stck_len);
 
 /*
- * Funkce vybere hodnotu z vrcholu zasobniku.
+ * Funkce ukaze znak na vrcholu zasobniku.
+ * Pokud dojde k podteceni, fce vrati 0.0 a nastavi flag UFd na 1.
  */
 double popd(int *sp, double stck[]);
 
 /*
- * Funkce ukaze hodnotu na vrcholu zasobniku.
+ * Funkce ukaze znak na vrcholu zasobniku.
+ * Pokud dojde k podteceni, fce vrati 0.0 a nastavi flag UFd na 1.
  */
 double showd(int *sp, double stck[]);
 
 /*Flagy podteceni zasobniku*/
 extern int UFc,UFd;
+
+/*Flagy preteceni zasobniku*/
+extern int OFc,OFd;
 
 #endif

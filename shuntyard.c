@@ -84,7 +84,8 @@
   */
  chrTkn *shuntingYard(chrTkn *vstup)
  {
-	char stack[255];
+	#define STACK_LEN 255
+	char stack[STACK_LEN];
 	chrTkn *tmp = NULL;
 	chrTkn *vystup = NULL;
 	/*Prave zpracovavany znak, operator1, operator2*/
@@ -183,7 +184,7 @@
 				  #ifdef DBG
 				  printf("Vkladam operator %c do zasobniku na pozici %d\n",op1,sp);
 				  #endif
-				  push(&sp,stack,op1);
+				  push(&sp,stack,op1,STACK_LEN);
 			}/*end if operator*/
 			
 		   /*
@@ -195,7 +196,7 @@
 				printf("Nalezena leva zavorka. Vkladam na zasobnik na pozici %d.\n",sp);
 				#endif
 				
-				push(&sp,stack,'(');
+				push(&sp,stack,'(',STACK_LEN);
 			}
 			if(znak == ')')
 			{
