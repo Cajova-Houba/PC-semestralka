@@ -6,12 +6,13 @@
 /*
  * Funkce vytvori a inicialiuje novy token, ktery vrati jako vysledek.
  */
-chrTkn *createToken(int value, int jeCislo)
+chrTkn *createToken(double dVal, char cVal, int jeCislo)
 {
 	chrTkn *res;
 	res = malloc(sizeof(chrTkn));
 	res->dalsi = NULL;
-	res->val = value;
+	res->dVal = dVal;
+	res->cVal = cVal;
 	res->jeCislo = jeCislo;
 	
 	return res;
@@ -22,12 +23,12 @@ chrTkn *createToken(int value, int jeCislo)
  * Pokud je zadany pocatek seznamu NULL, vytvori jej.
  * Funkce vraci ukazatel na zacatek seznamu.
  */ 
-chrTkn *vlozNaKonec(chrTkn *r, int value, int jeCislo)
+chrTkn *vlozNaKonec(chrTkn *r, double dVal, char cVal, int jeCislo)
 {
 	chrTkn *tmp = NULL;
 	if(r == NULL)
 	{
-		r = createToken(value, jeCislo);
+		r = createToken(dVal, cVal, jeCislo);
 		return r;
 	}
 	
@@ -37,9 +38,27 @@ chrTkn *vlozNaKonec(chrTkn *r, int value, int jeCislo)
 	{
 		tmp = tmp->dalsi;
 	}
-	tmp->dalsi = createToken(value,jeCislo);
+	tmp->dalsi = createToken(dVal, cVal, jeCislo);
 	
 	return r;
+}
+
+/*
+ * Funkce vlozi realne cislo na konec seznamu tokenu.
+ * Nove vytvoreny token vrati.
+ */
+chrTkn *vlozNaKonecD(chrTkn *r, double dVal)
+{
+	return vlozNaKonec(r,dVal,'\0',1);
+}
+
+/*
+ * Funkce vlozi znak na konec seznamu tokenu.
+ * Nove vytvoreny token vrati.
+ */
+chrTkn *vlozNaKonecC(chrTkn *r, char cVal)
+{
+	return vlozNaKonec(r,0.0,cVal,0);
 }
 
 /*
@@ -70,11 +89,11 @@ void vypis(chrTkn *r)
 	{
 		if(tmp->jeCislo)
 		{
-			printf("%d",tmp->val);
+			printf("%.3f",tmp->dVal);
 		}
 		else
 		{
-			printf("%c",(char)tmp->val);
+			printf("%c",tmp->cVal);
 		}
 		tmp = tmp->dalsi;
 	}
@@ -95,24 +114,10 @@ void vypisASCII(chrTkn *r)
 	tmp = r;
 	while(tmp != NULL)
 	{
-		printf("Znak: %d\n",tmp->val);
+		printf("Znak: %d\n",tmp->cVal);
 		tmp = tmp->dalsi;
 	}
 	printf("\n");
-}
-
-/*
- * Funkce zkopiruje obsah jednoho tokenu do druheho, nekopiruje vsak odkaz na dalsi token. 
- */
-void copy(chrTkn *source, chrTkn *dest)
-{
-	if ((source == NULL)  || (dest == NULL))
-	{
-		return;
-	}
-	
-	dest->val = source->val;
-	dest->jeCislo = source->jeCislo;
 }
 
 /*
@@ -130,14 +135,14 @@ char getValc(chrTkn *source)
 		return '\0';
 	}
 	
-	return (char)(source->val);
+	return (source->cVal);
 }
 
 /*
  * Funkce vrati ciselnou hodnotu v zadanem tokenu. Pokud token obsahuje znak,
  * vrati fce 0.
  */ 
-int getVali(chrTkn *source)
+double getVald(chrTkn *source)
 {
 	if (source == NULL)
 	{
@@ -149,5 +154,5 @@ int getVali(chrTkn *source)
 		return 0;
 	}
 	
-	return source->val;
+	return source->dVal;
 }

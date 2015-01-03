@@ -40,8 +40,8 @@ double divD(double a, double b)
 	double tmp;
 	tmp = a/b;
 	
-	/*pripadna chyba v rozsahu*/
-	if(errno == ERANGE)
+	/*pripadna chyba v rozsahu / oboru hodnot*/
+	if(errno == ERANGE || errno == EDOM)
 	{
 		errno = 0;	
 		return 0;
@@ -261,15 +261,15 @@ double compute(chrTkn *root, double x_val)
 		if(tmp->jeCislo)
 		{
 			/*vlozeni cisla na zasobnik*/
-			pushd(&sp,stack,(double)tmp->val,SPLEN);
-			if(checkOF(tmp->val))
+			pushd(&sp,stack,tmp->dVal,SPLEN);
+			if(checkOF(tmp->dVal))
 			{	
 				return 0.0;
 			}
 		}
 		else
 		{
-			znak = tmp->val;
+			znak = tmp->cVal;
 			/*provedeni operace*/
 			switch(znak)
 			{
@@ -345,7 +345,7 @@ double compute(chrTkn *root, double x_val)
 			
 			/*vlozeni vysledku oprace na zasobnik*/
 			pushd(&sp,stack,tmpRes,SPLEN);
-			if(checkOF(tmp->val))
+			if(checkOF(tmpRes))
 			{	
 				return 0.0;
 			}

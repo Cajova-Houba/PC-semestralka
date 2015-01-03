@@ -3,7 +3,7 @@
 
 /*
  * Token pro shunting yard algoritmus. Retezec je linearni seznam
- * tokenu. U jednoznakovych retezcu je tento znak ulozen v kodu asci.
+ * tokenu, ktere muzou obsahovat bud cislo, nebo znakovy token.
  */
 typedef struct charToken{
 	double dVal;
@@ -46,12 +46,24 @@ enum kodyFunkci{
  * Pokud je r==null, je vytvoren novy root. Fce vraci ukazatel na root
  * seznamu.
  */
-chrTkn *vlozNaKonec(chrTkn *r, int value, int jeCislo);
+chrTkn *vlozNaKonec(chrTkn *r, double dVal, char cVal, int jeCislo);
+
+/*
+ * Funkce vlozi realne cislo na konec seznamu tokenu.
+ * Nove vytvoreny token vrati.
+ */
+chrTkn *vlozNaKonecD(chrTkn *r, double dVal);
+
+/*
+ * Funkce vlozi znak na konec seznamu tokenu.
+ * Nove vytvoreny token vrati.
+ */
+chrTkn *vlozNaKonecC(chrTkn *r, char cVal);
 
 /*
  * Funkce vytvori a inicialiuje novy token, ktery vrati jako vysledek.
  */
-chrTkn *createToken(int value, int jeCislo);
+chrTkn *createToken(double dVal, char cVal, int jeCislo);
 
 /*
  * Funkce vypise zadany seznam tokenu na jeden radek.
@@ -67,15 +79,5 @@ void smaz(chrTkn *r);
  * Funkce vypise zadany seznam tokenu jako ASCII hodnoty.
  */
 void vypisASCII(chrTkn *r);
-
-/*
- * Funkce zkopiruje obsah jednoho tokenu do druheho, nekopiruje vsak odkaz na dalsi token. 
- */
-void copy(chrTkn *source, chrTkn *dest);
-
-/*
- * Funkce vrati znakovou hodnotu tokenu. Pokud je token ciselny, vrati \0.
- */
-char getValc(chrTkn *source);
 
 #endif

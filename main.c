@@ -6,7 +6,7 @@
 #include "shuntyard.h"
 #include "compute.h"
 #include "zapisovac.h"
-/*#define DBG*/
+#define DBG
 
 /*
  * Vypise dodanou chybu.

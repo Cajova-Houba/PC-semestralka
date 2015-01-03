@@ -4,11 +4,13 @@
  */
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "shuntyard.h"
 #include "charToken.h"
 #include "zasobnik.h"
 
-/*#define DBG*/
+#define DBG
+
 /*
  * Funkce zjisti, zda je zadany znak matematicky operator.
  */
@@ -129,10 +131,10 @@
 		if(tmp->jeCislo)
 		{
 			/*Cislo - dej na vystup*/
-			vystup = vlozNaKonec(vystup,tmp->val,1);
+			vystup = vlozNaKonecD(vystup,tmp->dVal);
 			
 			#ifdef DBG
-			printf("Nalezeno cislo %i, vlozeno na vystup\n",tmp->val);
+			printf("Nalezeno cislo %.3f, vlozeno na vystup\n",tmp->dVal);
 			#endif
 		}
 		else
@@ -144,7 +146,7 @@
 			/*Promenna - dej na vystup*/
 			if(znak == 'x')
 			{
-				vystup = vlozNaKonec(vystup,znak,0);
+				vystup = vlozNaKonecC(vystup,znak);
 			}
 			
 			/*Operator*/
@@ -174,7 +176,7 @@
 						if(getPriority(op1) <= getPriority(op2)) 
 						{
 							/*printf("Davam operator %c do vystupu na pozici %d.\n",op2,cur);*/
-							vystup = vlozNaKonec(vystup,pop(&sp,stack),0);
+							vystup = vlozNaKonecC(vystup,pop(&sp,stack));
 						}
 							else
 							{
@@ -189,7 +191,7 @@
 							if(getPriority(op1) < getPriority(op2)) 
 							{
 								/*printf("Davam operator %c do vystupu na pozici %d.\n",op2,cur);*/
-								vystup = vlozNaKonec(vystup,pop(&sp,stack),0);
+								vystup = vlozNaKonecC(vystup,pop(&sp,stack));
 							}
 							else
 							{
@@ -232,10 +234,10 @@
 				while(show(&sp,stack) != '(')
 				{
 					#ifdef DBG
-					printf("Vkladam znak %c do vystupu na pozici %d.\n",show(&sp,stack),cur);
+					printf("Vkladam znak %c na vystup.\n",show(&sp,stack));
 					#endif
 					 
-					vystup = vlozNaKonec(vystup,pop(&sp,stack),0);
+					vystup = vlozNaKonecC(vystup,pop(&sp,stack));
 					/*postbuff[cur++] = pop(&sp,stack);*/
 					 
 					/*Neuzavreny vyraz*/
@@ -261,7 +263,7 @@
 			printf("Error: Unclosed bracket.\n");
 			return NULL;
 		}
-        vystup = vlozNaKonec(vystup,pop(&sp,stack),0);
+        vystup = vlozNaKonecC(vystup,pop(&sp,stack));
     }
 	
 	return vystup; 
@@ -340,6 +342,26 @@ int najdiFci(char *text)
 		return 0;
 	}
 }
+
+/*
+ * Funkce je nahradou fce strncpy() se kterou jsou pouze problemy.
+ * Funkce vraci odkaz na nove alokovaonu pamet, kterou je treba uvolnit.
+ */
+char *realStrncpy(char source[], int cnt)
+{
+	char *res;
+	int i;
+	
+	res = malloc((cnt+1)*sizeof(char));
+	for(i = 0; i < cnt; i++)
+	{
+		res[i] = source[i];
+	}
+	
+	res[cnt] = '\0';
+	return res;
+}
+
  
  /*
  * Funkce prevede pole charu na spojovy seznam tokenu.
@@ -353,7 +375,7 @@ chrTkn *preproc(int vstupLen, char input[])
 	int i=0;
 	int od=0,poc=0; /*odkud a pocet znaku v retezci tvorici cislo*/
 	double cislo=0; /*nalezene cislo*/
-	char tmp[50]; /*buffer na kopírování nalezeného cisla*/
+	char *tmp; /*zde bude zkopirovano nalezene cislo*/
 	unsigned int k=0;
 	char znak[10];/*ukazatel na cast retezce, ve kterem by melo byt jmeno fce*/
 	int kodFce = 0;
@@ -377,16 +399,16 @@ chrTkn *preproc(int vstupLen, char input[])
 				{
 					if ((i == 0) || (input[i-1] == '(') || isOperator(input[i-1]))
 					{
-						root = vlozNaKonec(root,'_',0);
+						root = vlozNaKonecC(root,'_');
 					}
 					else
 					{
-						root = vlozNaKonec(root,input[i],0);
+						root = vlozNaKonecC(root,input[i]);
 					}
 				}
 				else
 				{
-					root = vlozNaKonec(root,input[i],0);
+					root = vlozNaKonecC(root,input[i]);
 				}
 				/*printf("Nalezen operator %c\n",input[i]);*/
 				
@@ -397,7 +419,7 @@ chrTkn *preproc(int vstupLen, char input[])
 			/*Promenna*/
 			else if(input[i] == 'x')
 			{
-                        root = vlozNaKonec(root,input[i],0);
+                        root = vlozNaKonecC(root,input[i]);
             }
             		
 			/*Cislo*/
@@ -410,15 +432,19 @@ chrTkn *preproc(int vstupLen, char input[])
 					poc++;
 					i++;
 				}
-				strncpy(tmp,input[od],poc);
-				tmp[poc] = '\0';
+				
+				#ifdef DBG
+				printf("Prevadim retezec na cislo. %i znaku od %c.\n",poc,input[od]);
+				#endif
+				
+				tmp = realStrncpy((input+od),poc);
 				cislo = atof(tmp);
 				
 				#ifdef DBG
 				printf("Nalezeno cislo %.3f\n",cislo);
 				#endif
 				
-				root = vlozNaKonec(root,cislo,1);
+				root = vlozNaKonecD(root,cislo);
 				
 				continue;
 			}
@@ -459,7 +485,7 @@ chrTkn *preproc(int vstupLen, char input[])
 				}
 				else
 				{
-					root = vlozNaKonec(root, kodFce, 0);
+					root = vlozNaKonecC(root, kodFce);
 				}
 				
 				continue;
@@ -513,7 +539,7 @@ int validateRPN(chrTkn *root)
 		}
 		else
 		{
-			znak = tmp->val;
+			znak = tmp->cVal;
 			if(znak == 'x')
 			{
 				cntr ++;
