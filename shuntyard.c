@@ -350,7 +350,10 @@ chrTkn *preproc(int vstupLen, char input[])
 	#ifdef DBG
 	printf("Start preprocesingu.. ");
 	#endif
-	int i=0,cislo=0;
+	int i=0;
+	int od=0,poc=0; /*odkud a pocet znaku v retezci tvorici cislo*/
+	double cislo=0; /*nalezene cislo*/
+	char tmp[50]; /*buffer na kopírování nalezeného cisla*/
 	unsigned int k=0;
 	char znak[10];/*ukazatel na cast retezce, ve kterem by melo byt jmeno fce*/
 	int kodFce = 0;
@@ -398,17 +401,23 @@ chrTkn *preproc(int vstupLen, char input[])
             }
             		
 			/*Cislo*/
-			else if(input[i] >= '0' && input[i] <= '9')
+			else if((input[i] >= '0' && input[i] <= '9') || input[i] == '.' || input[i] == 'e' || input[i] == 'E')
 			{
-				cislo = 0;
-				while(input[i] >='0' && input[i] <= '9' && i < vstupLen)
+				od = i;
+				poc = 0;
+				while((input[i] >= '0' && input[i] <= '9') || input[i] == '.' || input[i] == 'e' || input[i] == 'E')
 				{
-					/*nacitani cisla podle zanku*/
-					cislo *= 10;
-					cislo += (input[i] - '0');
+					poc++;
 					i++;
 				}
-				/*printf("Nalezeno cislo %i\n",cislo);*/
+				strncpy(tmp,input[od],poc);
+				tmp[poc] = '\0';
+				cislo = atof(tmp);
+				
+				#ifdef DBG
+				printf("Nalezeno cislo %.3f\n",cislo);
+				#endif
+				
 				root = vlozNaKonec(root,cislo,1);
 				
 				continue;
@@ -436,7 +445,7 @@ chrTkn *preproc(int vstupLen, char input[])
 				
 				if(znak == NULL)
 				{
-					printf("Error when finding function at %d. position.\n",i);	
+					printf("Error when searching for function at %d. position.\n",i);	
 					smaz(root);
 					return NULL;
 				}
@@ -444,7 +453,7 @@ chrTkn *preproc(int vstupLen, char input[])
 				kodFce = najdiFci(znak);
 				if(kodFce == 0)
 				{
-					printf("Error when finding function at %d. position.\n",i);
+					printf("Error when searching for function at %d. position.\n",i);
 					smaz(root);
 					return NULL;
 				}

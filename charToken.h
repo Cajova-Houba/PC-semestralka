@@ -6,7 +6,8 @@
  * tokenu. U jednoznakovych retezcu je tento znak ulozen v kodu asci.
  */
 typedef struct charToken{
-	int val;
+	double dVal;
+	char cVal;
 	int jeCislo;
 	struct charToken *dalsi;
 } chrTkn;
