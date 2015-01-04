@@ -15,6 +15,7 @@ void zapisDoSouboru(char *fname, double values[][2], int val_len, double limits[
 	FILE *f_vystup = fopen(fname, "w");
 	/*defaultni rozmery stranky jsou 595*842 px (A4)*/
 	int a4w=595, a4h=842;
+	int fVyska = 6; /*vyska fontu vychazi priblizne na 6 bodu*/
 	int i;
 	/*pro vypsani hodnot na osu x bude pouzit rozsah <floor(D_min);ceil(D_max)>*/	
 	limits[0] = floor(limits[0]);
@@ -28,7 +29,8 @@ void zapisDoSouboru(char *fname, double values[][2], int val_len, double limits[
 	int ok; /*oprava ocasku pri vykreslovani*/
 	float krokx,kroky; /*krok popisku os*/
 	float delkac; /*delka popiskove carky na ose x,y*/
-	int pocx=15,pocy=15; /*pocet hodnot na osach x,y*/
+	/*pocet hodnot na osach x,y. Vyska fontu je 6 bodu, pokud by se na vysku hodnoty nevesly, bude jich zobrazeno mene*/
+	int pocx=15,pocy=(int)fmin(15,floor(delkay*meritko / fVyska)); 
 	
 	char p[3], lnt[7], mvt[7];
 	strcpy(p,"%%");
@@ -39,13 +41,6 @@ void zapisDoSouboru(char *fname, double values[][2], int val_len, double limits[
 	printf("limits: %.3f %.3f %.3f %.3f\n",limits[0],limits[1],limits[2],limits[3]);
 	printf("delkax: %.3f delkay: %.3f\n",delkax,delkay);
 	#endif
-	
-	/*normalizace hodnot*/
-	/*for(i = 1; i < val_len; i++)
-	{
-		values[i][0] -= limits[0]; x hodnota - x_min
-		values[i][1] -= limits[2]; y hodnota - y_min
-	}*/
 	
 	fprintf(f_vystup,"%%!PS-Adobe-3.0\n"); /*Hlavicka PostScript*/
 	fprintf(f_vystup,"%sCreator: Zdenek Vales\n",p); /*Autor*/
@@ -107,7 +102,7 @@ void zapisDoSouboru(char *fname, double values[][2], int val_len, double limits[
 	fprintf(f_vystup,"setmatrix \nstroke\n\n");
 	
 	/*y*/
-	fprintf(f_vystup,"matrix currentmatrix \n%d %d translate \n",odsazenix/4,odsazeniy);
+	fprintf(f_vystup,"matrix currentmatrix \n%d %d translate \n",odsazenix/4,odsazeniy-fVyska/2);
 	fprintf(f_vystup,"(%.2f) 0 0 popisy\n",limits[2]);
 	for(i = 1; i <= pocy; i++)
 	{
@@ -148,7 +143,6 @@ void zapisDoSouboru(char *fname, double values[][2], int val_len, double limits[
 		}
 	}
 	
-	/*fprintf(f_vystup,"closepath\n");*/
 	fprintf(f_vystup,"setmatrix \n1 0 0 setrgbcolor \nstroke \nshowpage \n");
 	
 	fprintf(f_vystup,"%sEOF\n",p); /*Konec souboru*/

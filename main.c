@@ -6,8 +6,8 @@
 #include "shuntyard.h"
 #include "compute.h"
 #include "zapisovac.h"
-#define DBG
 
+/*#define DBG*/
 /*
  * Vypise dodanou chybu.
  */
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 	/*kompilator visual studio 2013 nebere deklaraci delky poli vstup,out_name a res z promennych*/
 	#define VSTUP_LEN 200
 	#define VYST_LEN 50
-	#define RES_LEN 401
+	#define RES_LEN 10001
 	int vstup_len = VSTUP_LEN, res_len = RES_LEN, vyst_len = VYST_LEN, i, len = 0; /*len je skutecna delka nacteneho vstupu*/
 	char vstup[VSTUP_LEN], out_name[VYST_LEN];  
 	char arg3[255], *omez; /*do arg3 se nakopiruje argument obsahujici omezeni, do omez uklada vysledek strtok()*/
@@ -50,11 +50,16 @@ int main(int argc, char *argv[])
     if (argc < 3)
     { 
         /*printf("Chyba: spatny pocet argumentu.\n");*/
-		vypisChybu("Some parameters are missing. Use program as shown: graph.exe math+function output.file <x_min:x_max:y_min:y_max>");
+		vypisChybu("Some parameters are missing. Use program as shown: graph.exe math+function output.file <x_min:x_max:y_min:y_max> .");
 		return 1;
     }
     else
-    {
+    {	
+		if (argc > 4 )
+		{
+			vypisChybu("Too many arguments.");
+			return 7;
+		}
         strcpy(vstup, argv[1]);
 		strcpy(out_name, argv[2]);
 		

@@ -3,7 +3,7 @@
  * v postfixove notaci.
  * Operatory a fce: viz charToken.h
  */
-
+/*#define DBG*/
 #include <stdlib.h>
 #include <math.h>
 #include <stdio.h>
@@ -13,7 +13,6 @@
 #include "compute.h"
 
 #define PI 3.14159265
-/*#define DBG*/
 
 /* Standardni operatory a fce*/
 /*Scitani*/

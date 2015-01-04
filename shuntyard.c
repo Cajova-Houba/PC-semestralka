@@ -9,7 +9,7 @@
 #include "charToken.h"
 #include "zasobnik.h"
 
-#define DBG
+/*#define DBG*/
 
 /*
  * Funkce zjisti, zda je zadany znak matematicky operator.
@@ -437,6 +437,7 @@ chrTkn *preproc(int vstupLen, char input[])
 				printf("Prevadim retezec na cislo. %i znaku od %c.\n",poc,input[od]);
 				#endif
 				
+				/*prevod nalezeneho cisla z retezce na double*/
 				tmp = realStrncpy((input+od),poc);
 				cislo = atof(tmp);
 				

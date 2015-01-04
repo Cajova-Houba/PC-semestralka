@@ -80,4 +80,15 @@ void smaz(chrTkn *r);
  */
 void vypisASCII(chrTkn *r);
 
+/*
+ * Funkce vrati znakovou hodnotu tokenu. Pokud je token ciselny, vrati \0.
+ */
+char getValc(chrTkn *source);
+
+/*
+ * Funkce vrati ciselnou hodnotu v zadanem tokenu. Pokud token obsahuje znak,
+ * vrati fce 0.
+ */ 
+double getVald(chrTkn *source);
+
 #endif
