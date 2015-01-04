@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.1.2)  4 JAN 2015 18:25
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.1.2)  4 JAN 2015 23:25
 entering extended mode
 **dokumentace.tex
 (D:\prg\c\PC-semestralka\dokumentace\dokumentace.tex
@@ -558,7 +558,7 @@ ted-to.pdf ocasek-ilustrace.eps>
 (epstopdf)             \includegraphics on input line 162.
 Package epstopdf Info: Output file is already uptodate.
 
-<ocasek-ilustrace-eps-converted-to.pdf, id=101, 410.53375pt x 148.555pt>
+<ocasek-ilustrace-eps-converted-to.pdf, id=105, 410.53375pt x 148.555pt>
 File: ocasek-ilustrace-eps-converted-to.pdf Graphic file (type pdf)
 
 <use ocasek-ilustrace-eps-converted-to.pdf>
@@ -610,37 +610,70 @@ Overfull \hbox (17.45549pt too wide) in paragraph at lines 184--185
  []
 
 
+Overfull \hbox (1.53204pt too wide) in paragraph at lines 186--187
+[]\OT1/cmr/m/n/12 Zapis funkce muze ob-sa-ho-vat vyse zmnene funkce a 
+operatory, promennou
+ []
+
+[8]
+Overfull \hbox (73.39705pt too wide) in paragraph at lines 190--191
+\OT1/cmr/m/n/12 not vy-kres-lo-vane funkce. Format to-hoto pa-ra-me-tru je n
+asledujc \OT1/cmr/m/it/12 x[]min\OT1/cmr/m/n/12 :\OT1/cmr/m/it/12 x[]max\OT
+1/cmr/m/n/12 :\OT1/cmr/m/it/12 y[]min\OT1/cmr/m/n/12 :\OT1/cmr/m/it/12 y[]max\O
+T1/cmr/m/n/12 .
+ []
+
+
+Overfull \hbox (1.75427pt too wide) in paragraph at lines 192--193
+[]\OT1/cmr/m/n/12 Vysledek pro-gramu je pak sou-bor ve formatu Po-st-Script o
+b-sa-hujc prkazy
+ []
+
+
 Package hyperref Warning: Composite letter `\textasciicaron+e'
 (hyperref)                not defined in PD1 encoding,
-(hyperref)                removing `\textasciicaron' on input line 191.
+(hyperref)                removing `\textasciicaron' on input line 195.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 196.
-[8]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 196.
+
+Overfull \hbox (13.31248pt too wide) in paragraph at lines 197--198
+\OT1/cmr/m/n/12 Program fun-guje spravne, bez me-mory leaku a neznamych p
+adu behem vypoctu.
+ []
+
+[9]
+Overfull \hbox (13.88152pt too wide) in paragraph at lines 214--215
+[]\OT1/cmr/m/n/12 Dals zavaznejs problem mi zpusobovala funkce \OT1/
+cmr/m/it/12 strn-cpy()\OT1/cmr/m/n/12 . Prvn byl problem
+ []
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 224.
+[10]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 224.
  (D:\prg\c\PC-semestralka\dokumentace\dokumentace.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 196.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 196.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 224.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 224.
 Package rerunfilecheck Info: File `dokumentace.out' has not changed.
-(rerunfilecheck)             Checksum: 961748BAE3BE558539BAC6A5B28617D8;853.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 196.
+(rerunfilecheck)             Checksum: A97D3983060FE160203B40029B48B54B;932.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 224.
  ) 
 Here is how much of TeX's memory you used:
- 7153 strings out of 493921
- 102620 string characters out of 3148884
- 189190 words of memory out of 3000000
- 10355 multiletter control sequences out of 15000+200000
+ 7160 strings out of 493921
+ 102706 string characters out of 3148884
+ 189193 words of memory out of 3000000
+ 10359 multiletter control sequences out of 15000+200000
  8410 words of font info for 30 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
  30i,7n,32p,870b,442s stack positions out of 5000i,500n,10000p,200000b,50000s
 <D:/tools/develop/MiKTex/fonts/type1/public/amsfonts/cm/cmbx12.pfb><D:/tools/
 develop/MiKTex/fonts/type1/public/amsfonts/cm/cmmi12.pfb><D:/tools/develop/MiKT
-ex/fonts/type1/public/amsfonts/cm/cmr12.pfb><D:/tools/develop/MiKTex/fonts/type
-1/public/amsfonts/cm/cmr8.pfb><D:/tools/develop/MiKTex/fonts/type1/public/amsfo
-nts/cm/cmsy10.pfb><D:/tools/develop/MiKTex/fonts/type1/public/amsfonts/cm/cmti1
-2.pfb><D:/tools/develop/MiKTex/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on dokumentace.pdf (8 pages, 141418 bytes).
+ex/fonts/type1/public/amsfonts/cm/cmmi8.pfb><D:/tools/develop/MiKTex/fonts/type
+1/public/amsfonts/cm/cmr12.pfb><D:/tools/develop/MiKTex/fonts/type1/public/amsf
+onts/cm/cmr8.pfb><D:/tools/develop/MiKTex/fonts/type1/public/amsfonts/cm/cmsy10
+.pfb><D:/tools/develop/MiKTex/fonts/type1/public/amsfonts/cm/cmti12.pfb><D:/too
+ls/develop/MiKTex/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on dokumentace.pdf (10 pages, 158690 bytes).
 PDF statistics:
- 155 PDF objects out of 1000 (max. 8388607)
- 32 named destinations out of 1000 (max. 500000)
- 110 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 172 PDF objects out of 1000 (max. 8388607)
+ 35 named destinations out of 1000 (max. 500000)
+ 118 words of extra memory for PDF output out of 10000 (max. 10000000)
 

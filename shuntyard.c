@@ -440,6 +440,7 @@ chrTkn *preproc(int vstupLen, char input[])
 				/*prevod nalezeneho cisla z retezce na double*/
 				tmp = realStrncpy((input+od),poc);
 				cislo = atof(tmp);
+				free(tmp);
 				
 				#ifdef DBG
 				printf("Nalezeno cislo %.3f\n",cislo);
@@ -452,13 +453,13 @@ chrTkn *preproc(int vstupLen, char input[])
 			
 			/*Jiny znak nez promenna, bude potreba najit fci. Pokud bude nalezena pouze cast fce (napr si misto sin)
 			 * fce vrati NULL.*/
-			else if ((input[i] >= 'a') && (input[i] <= 'z'))
+			else if ( ((input[i] >= 'a') && (input[i] <= 'z')) || ((input[i] >= 'A') && (input[i] <= 'Z')) )
 			{
 				/*Kontrola delky vstupu*/
 				k=0;
 				while(k<10)
 				{
-					if((input[i+k] >= 'a') && (input[i+k]) <= 'z')
+					if( ((input[i+k] >= 'a') && (input[i+k] <= 'z'))  || ((input[i] >= 'A') && (input[i] <= 'Z')) )
 					{
 						znak[k] = input[i+k];
 					}
@@ -480,7 +481,7 @@ chrTkn *preproc(int vstupLen, char input[])
 				kodFce = najdiFci(znak);
 				if(kodFce == 0)
 				{
-					printf("Error when searching for function at %d. position.\n",i);
+					printf("Error when searching for function at position %d.\n",i);
 					smaz(root);
 					return NULL;
 				}
@@ -493,7 +494,7 @@ chrTkn *preproc(int vstupLen, char input[])
 			}
 			
 			/*
-			 * Pokud narazi na prazdny charakter, ukonci pruchod retezcem.
+			 * Pokud narazi na prazdny znak, ukonci pruchod retezcem.
 			 * Neni nutno inicializovat cele staticke pole vstupu, pouze
 			 * staci pridat na konec znak \0. Pri nacitani vstupu ze statickeho
 			 * pole se bez pouziti \0 objevuji artefakty.
@@ -502,6 +503,13 @@ chrTkn *preproc(int vstupLen, char input[])
 			{
 				printf("hotovo \n");
 				return root;
+			}
+			
+			/* Jiny nez povoleny znak -> vypise chybu a program skonci*/
+			else
+			{
+				printf("Illegal symbol '%c' at position %i.\n",input[i],i);
+				return NULL;
 			}
 			
 			i++;

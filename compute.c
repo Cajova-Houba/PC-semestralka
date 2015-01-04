@@ -14,6 +14,19 @@
 
 #define PI 3.14159265
 
+/* Pokud je cislo a NaN vrati nula, jinak vrati zadane cislo*/
+double nancheck(double a)
+{
+	if (a != a)
+	{
+		return 0.0;
+	}
+	else
+	{
+		return a;
+	}
+}
+
 /* Standardni operatory a fce*/
 /*Scitani*/
 double addD(double a, double b)
@@ -47,7 +60,7 @@ double divD(double a, double b)
 	}
 	else
 	{
-		return tmp;
+		return nancheck(tmp);
 	}
 }
  
@@ -65,7 +78,7 @@ double powD(double a, double exp)
 	}
 	else
 	{
-		return tmp;
+		return nancheck(tmp);
 	} 
 }
 
@@ -84,7 +97,7 @@ double expD(double a)
 	}
 	else
 	{
-		return tmp;
+		return nancheck(tmp);
 	}
 }
 
@@ -102,7 +115,7 @@ double lnD(double a)
 	}
 	else
 	{
-		return tmp;
+		return nancheck(tmp);
 	}
 }
 
@@ -120,7 +133,7 @@ double logD(double a)
 	}
 	else
 	{
-		return tmp;
+		return nancheck(tmp);
 	}
 }
 

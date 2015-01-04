@@ -179,18 +179,46 @@ Druhý (jméno \emph{makefile.win}) kompiluje překladačem cl (překladač od M
 Výsledkem sestavení pomocí obou makefile je spustitelná aplikace graph.exe.
 
 \subsection{Použití programu}
-Program se spouští příkazem \emph{graph.exe $<$funkce$>$ $<$vystupni-soubor$>$ [$<$omezeni$>$]}. Paramery \emph{funkce} a \emph{vystupni-soubor} jsou povinné, parametr \emph{omezeni} je nepoviný, musí však dodržet níže popsaný formát.
+Program se spouští příkazem \emph{graph.exe $<$funkce$>$ $<$vystupni-soubor$>$ [$<$omezeni$>$]}. Paramery \emph{funkce} a \emph{vystupni-soubor} jsou povinné, parametr \emph{omezeni} je nepoviný, musí však dodržet níže popsaný formát. Paramtry je možné zadávat v uvozovkách i bez uvozovek. Nicméně pokud parametr obsahuje mezery (např. $x+5$), příkazový procesor pak parametr vyhodnotí jako více parametrů a program skončí chybou.
 
-Zápis matematické funkce musí být jednoznačný a nesmí být vynechán operátor násobení (místo 2x tedy 2*x). Názvy matematických funkcí a operátorů, které je možno použít, se nachází v kompletním zadání v sekci \nameref{sec:zadani}. K těmto funkcím jsou navíc přidány funkce \emph{cotan()} a \emph{acotan()}. 
+Zápis matematické funkce musí být jednoznačný a nesmí být vynechán operátor násobení (místo 2x tedy 2*x). Názvy matematických funkcí a operátorů, které je možno použít, se nachází v kompletním zadání v sekci \nameref{sec:zadani}. K těmto funkcím jsou navíc přidány funkce \emph{cotan()} a \emph{acotan()}. Názvy matematických funkcí jsou case-sensitive a je povolen zápis pouze malými písmeny. 
 
-Zápis funkce je umožněn s uvozovkami - "$x^2 + 1$" i bez nich. Při zadávání funkce bez uvozovek je však nutné vynechat všechny mezery - příkazový procesor by jinak funkci přečetl jako více argumentů a program by skončil chybou.
+Zápis funkce může obsahovat výše zmíněné funkce a operátory, proměnnou (smybol \emph{x}), kulaté závorky a reálné konstanty zadané v akceptovatelném formátu jazyka C. Přidání jiných znaků do zápisu funkce způsobí chybu a ukončení programu.
 
-Parametr \emph{vystupni-soubor} je jméno výstupního souboru. Pokud bude uvedeno bez přípony, bude soubor bez přípony vytvořen. 
+Parametr \emph{vystupni-soubor} je úplné jméno výstupního souboru, ke jménu výstupního souboru se tedy automaticky nedoplní žádná přípona. 
 
-%shrnutí dosažených výsledků (např. časů běhu), zhodnocení splnění zadání, naznačení možných a žádoucích vylepšní, stručné shrnutí problémů, které se v semestrální práci vyskytly.
+Nepovinný parametr \emph{omezeni} umožňuje zadat definiční obor a obor hodnot vykreslované funkce. Formát tohoto parametru je následující \emph{x\_min}:\emph{x\_max}:\emph{y\_min}:\emph{y\_max}. Celkem se tedy v parametru zadávají čtyři hodnoty oddělené dvojtečkou. Pokud se v parametru zadá méně (nebo více) hodnot, případně se použije jiný oddělovač, program skončí chybou.
+
+Výsledek programu je pak soubor ve formátu PostScript obsahující příkazy na vykreslení grafu zadané funkce. Specifikace tohoto formátu je zmíněna v sekci \nameref{subsec:vyk_gr}. K prohlížení souborů formátu PostScript lze použít klasický program AdobeReader, případně speciální program GSView. Program GSView navíc vyžaduje instalaci interpreta jazyka PostScript - GhostScript.
+
+%Shrnutí dosažených výsledků (např. časů běhu), zhodnocení splnění zadání, naznačení možných a žádoucích vylepšní, stručné shrnutí problémů, které se v semestrální práci vyskytly.
 \section{Závěr}
+
+Program funguje správně, bez memory leaků a neznámých pádů během výpočtu. Časy běhů se (podle online validátoru) pohybují od 1 do 3 sekund, což pokládam za uspokojivé. Čas běhu na "normálním"  PC je pak ještě menší. Zadání se program snaží plnit co nejpřesněji. 
+
+Ačkoliv je program formálně v pořádku, nabízí se několik možných vylepšní. Mezi prvními je odstranění case-sensitive u detekce matematických funkcí. Následuje zobrazení hodnot u grafu. Hodnoty se zobrazují po stejném kroku a může se stát, že významná hodnota (např 0 u fce $x^2$) nebude zobrazena. V neposlední řadě by bylo dobré upravit rozmístění hodnot na ose x ze statického na dynamické - tím by se zabránilo situacím, kdy se tyto hodnoty překrývají.
+
+\subsection{Problémy a chyby programu}
+Při řešení semestrální práce se vyskytlo několik problémů. Většinu z nich se mi podařilo opravit (pochopením v čem dělám chybu). K odstranění některých chyb jsem pak musel použít jiné řešení. Jeden nastal při kompilaci kódu nástrojem od \emph{cl} od Microsoftu. Podle specifikace jazyka C musí být velikost statického pole známá v době deklarace. Následující kód v pořádku prošel kompilátorem \emph{gcc}.
+\begin{verbatim}
+int velikost_pole = 50;
+int pole[velikost_pole];
+\end{verbatim}
+Ale kompilátor \emph{cl} tento kód hodnotil chybně a chtěl při deklaraci pole konstantní hodnotu. Abych problém vyřešil, využil jsem preprocesor jazyka C a předchozí kód následovně upravil.
+\begin{verbatim}
+#define VELIKOST_POLE 50
+int velikost_pole = VELIKOST_POLE;
+int pole[VELIKOST_POLE];
+\end{verbatim}
+
+Další závažnější problém mi způsobovala funkce \emph{strncpy()}. První byl problém s parametrem \emph{source}, který musel být konstantní, další problém pak byly s náhodnými výsledky. Druhý problém je nejspíš zaviněn mým nepochopením funkce. Nakonec jsem si na kopírování počtu znaků ze zadaného řetězce napsal vlastní funkci, která vrací ukazatel na zkopírovaný řetězec. Má funkce má jednu nevýhodu, tou je nutnost uvolnit paměť (funkce využívá \emph{malloc}). Nicméně pro potřeby programu to nepředstavuje závažnější problém.
+
+Problém, který se mi nakonec podařilo opravit, nastává při vyčíslování funkcí, které nejsou na zadaných hodnotách definované v oboru reálných číel. Typicky $x^{2.5}$ v oboru $D=<-10;10>$. Podle knihovny math sice funkce \emph{pow()} (a další) nastavuje \emph{errno} na chybu rozsahu a chybu definičního oboru, nicméně při provedení $(-1)^{2.5}$ hodnota \emph{errno} nezmění a výsledné číslo se funkcí \emph{printf()} vytiskne jako "-1.\#IO" (NaN). Rozhodl jsem se, že pokud funkce z knihovny math vrátí NaN, hodnota se do výsledného souboru zapíše jako $0.0$.
+
+Problém, který se mi nepodařilo opravit, je použití operátoru mocnění \verb|^|  v příkazovém procesoru \emph{cmd} bez uvozovek. Například funkce zapsaná jako "\verb|x^2|" projde bez problémů, pokud ale vynecháme uvozovky, program skončí chybou při provádění lexikální analýzy. Vzhledem k tomu, doporučuji funkci vždy zapisovat do uvozovek.
 %problémy s cl a definicí velikosti pole
 %problémy se strncpy()
 %chyba (-1)^2.5
+%x^2 v cmd
 
 \end{document}
